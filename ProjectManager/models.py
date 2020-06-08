@@ -11,7 +11,12 @@ class Employee(models.Model):
     ]
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    phone_number = models.CharField(max_length=24, null=True)
     status = models.CharField(max_length=12, choices=status_choices)
+
+    def __str__(self):
+        name = f"{self.user.first_name} {self.user.last_name}"
+        return name
 
 class Client(models.Model):
 
@@ -21,6 +26,10 @@ class Client(models.Model):
     city = models.CharField(max_length=24)
     street = models.CharField(max_length=24)
     street_number = models.CharField(max_length=10)
+
+    def __str__(self):
+        name = f"{self.first_name} {self.last_name}"
+        return name
 
 
 class Project(models.Model):

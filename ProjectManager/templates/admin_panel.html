@@ -1,0 +1,26 @@
+{% extends 'index.html' %}
+{% block content %}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <button type="button" class="btn btn-success btn-lg">
+                <a href="{% url 'register' %}" class="text-white">Add employee</a>
+            </button>
+        </div>
+        <div class="col-sm">
+            <button type="button" class="btn btn-success btn-lg">
+                <a href="{% url 'create_client' %}" class="text-white">Add client</a>
+            </button>
+        </div>
+        <div class="col-sm">
+            <button type="button" class="btn btn-success btn-lg">
+                <a href="{% url 'create_project' %}" class="text-white">Add project</a>
+            </button>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
