@@ -113,3 +113,22 @@ def create_expertise(request):
     context = {'form':form}
 
     return render(request, 'create_expertise.html', context)
+
+
+def client_preview(request, pk):
+
+    client = Client.objects.get(id=pk)
+    projects = Project.objects.filter(client=client)
+
+    context = {'client':client, 'projects':projects}
+    return render(request, 'client_preview.html', context)
+
+
+def project_preview(request,pk):
+
+    project = Project.objects.get(id=pk)
+    expertise = Expertise.objects.filter(project=project)
+
+
+    return render(request, 'project_preview.html')
+

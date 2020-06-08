@@ -24,16 +24,15 @@
 <hr>
 <div class="btn-group-vertical">
     {% for client in clients %}
-    <div class="col-sm">
-        {{client}}
-    </div>
+
+    <a href="{% url 'client' client.id %}" class="list-group-item list-group-item-action">{{client}}</a>
+
     {% endfor %}
 </div>
 <div class="btn-group-vertical">
     {% for project in projects %}
-    <div class="col-sm">
-        {{project}}
-    </div>
+    <a href="{% url 'project' project.id %}" class="list-group-item list-group-item-action">{{project}}</a>
+
     {% endfor %}
 </div>
 
