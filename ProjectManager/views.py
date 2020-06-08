@@ -66,7 +66,7 @@ def admin_panel(request):
     clients = Client.objects.all()
     projects = Project.objects.all()
 
-    context = {'clients': clients, 'projects':projects}
+    context = {'clients': clients, 'projects': projects}
     return render(request, 'admin_panel.html', context)
 
 
@@ -80,7 +80,7 @@ def create_client(request):
 
             return redirect('admin_panel')
 
-    context = {'form':form}
+    context = {'form': form}
 
     return render(request, 'create_client.html', context)
 
@@ -95,7 +95,7 @@ def create_project(request):
 
             return redirect('admin_panel')
 
-    context = {'form':form}
+    context = {'form': form}
 
     return render(request, 'create_project.html', context)
 
@@ -110,7 +110,7 @@ def create_expertise(request):
 
             return redirect('admin_panel')
 
-    context = {'form':form}
+    context = {'form': form}
 
     return render(request, 'create_expertise.html', context)
 
@@ -120,7 +120,7 @@ def client_preview(request, pk):
     client = Client.objects.get(id=pk)
     projects = Project.objects.filter(client=client)
 
-    context = {'client':client, 'projects':projects}
+    context = {'client': client, 'projects': projects}
     return render(request, 'client_preview.html', context)
 
 
@@ -129,6 +129,6 @@ def project_preview(request,pk):
     project = Project.objects.get(id=pk)
     expertise = Expertise.objects.filter(project=project)
 
-
-    return render(request, 'project_preview.html')
+    context = {'project': project, 'expertise': expertise}
+    return render(request, 'project_preview.html', context)
 
