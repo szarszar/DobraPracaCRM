@@ -20,3 +20,9 @@ class CreateProjectForm(ModelForm):
     class Meta:
         model = Project
         fields = '__all__'
+
+
+class CreateExpertiseForm(ModelForm):
+    class Meta:
+        model = Expertise
+        fields = '__all__'

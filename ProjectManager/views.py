@@ -94,3 +94,18 @@ def create_project(request):
     context = {'form':form}
 
     return render(request, 'create_project.html', context)
+
+
+def create_expertise(request):
+    form = CreateExpertiseForm()
+
+    if request.method == "POST":
+        forms = CreateExpertiseForm(request.POST, request.FILES)
+        if forms.is_valid():
+            forms.save()
+
+            return redirect('admin_panel')
+
+    context = {'form':form}
+
+    return render(request, 'create_expertise.html', context)
