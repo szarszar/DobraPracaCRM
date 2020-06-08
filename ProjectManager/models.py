@@ -42,6 +42,10 @@ class Project(models.Model):
     employee = models.ManyToManyField(Employee)
     date_created = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        name = f"{self.client.last_name} project in {self.city}"
+        return name
+
 
 class Expertise(models.Model):
 

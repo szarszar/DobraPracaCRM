@@ -21,6 +21,20 @@
         </div>
     </div>
 </div>
-
+<hr>
+<div class="btn-group-vertical">
+    {% for client in clients %}
+    <div class="col-sm">
+        {{client}}
+    </div>
+    {% endfor %}
+</div>
+<div class="btn-group-vertical">
+    {% for project in projects %}
+    <div class="col-sm">
+        {{project}}
+    </div>
+    {% endfor %}
+</div>
 
 {% endblock %}

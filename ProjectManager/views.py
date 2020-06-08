@@ -63,7 +63,11 @@ def panel(request):
 
 
 def admin_panel(request):
-    return render(request, 'admin_panel.html')
+    clients = Client.objects.all()
+    projects = Project.objects.all()
+
+    context = {'clients': clients, 'projects':projects}
+    return render(request, 'admin_panel.html', context)
 
 
 def create_client(request):
