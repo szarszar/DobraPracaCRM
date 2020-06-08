@@ -18,6 +18,7 @@ class Employee(models.Model):
         name = f"{self.user.first_name} {self.user.last_name}"
         return name
 
+
 class Client(models.Model):
 
     first_name = models.CharField(max_length=24)
@@ -40,6 +41,16 @@ class Project(models.Model):
     street_number = models.CharField(max_length=10)
     employee = models.ManyToManyField(Employee)
     date_created = models.DateTimeField(auto_now_add=True)
+
+
+class Expertise(models.Model):
+
+    project = models.OneToOneField(Project, on_delete=models.CASCADE)
+    description = models.TextField()
+    image_1 = models.ImageField()
+    image_2 = models.ImageField()
+    image_3 = models.ImageField()
+    image_4 = models.ImageField()
 
 
 
