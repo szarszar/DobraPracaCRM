@@ -6,8 +6,11 @@ from .forms import *
 
 def home(request):
 
-    if request.user.is_authenticated():
-        return redirect('panel')
+    if request.user is not None:
+        if request.user.is_staff:
+            return redirect('admin_panel')
+        else:
+            return redirect('panel')
     else:
         return redirect('login')
 
