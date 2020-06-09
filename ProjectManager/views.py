@@ -140,10 +140,19 @@ def client_preview(request, pk):
 def project_preview(request,pk):
 
     project = Project.objects.get(id=pk)
-    expertise = Expertise.objects.get(project=project)
-    employees = project.employee.all()
+    try:
+        expertise = Expertise.objects.get(project=project)
+        employees = project.employee.all()
 
-    context = {'project': project, 'expertise': expertise, 'employees': employees}
+        context = {'project': project, 'expertise': expertise, 'employees': employees}
 
-    return render(request, 'project_preview.html', context)
+        return render(request, 'project_preview.html', context)
+
+    except:
+
+        employees = project.employee.all()
+
+        context = {'project': project, 'employees': employees}
+
+        return render(request, 'project_preview.html', context)
 
