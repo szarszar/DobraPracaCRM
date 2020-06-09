@@ -1,0 +1,75 @@
+{% extends 'index.html' %}
+{% block content %}
+
+<div class="card text-center" style="margin:3%">
+    <div class="card-header">
+        <span>Client: {{project.client}}</span>
+    </div>
+    <div class="card-body">
+        <ul>
+            <h3>City: {{project.city}}</h3>
+            <span>Adress: {{project.street}} {{project.street_number}}</span>
+            <hr>
+            <span>Assigned Employees: </span>
+            <ul>
+                {% for employee in employees%}
+                <li>{{employee}}</li>
+                {% endfor %}
+            </ul>
+
+        </ul>
+    </div>
+    <div class="card-footer text-muted">
+        {{project.date_created}}
+        {% if expertise is None %}
+        <hr>
+        <a href="{% url 'create_expertise' project.id%}" class="btn btn-outline-info">Add expertise</a>
+        {% endif %}
+    </div>
+</div>
+<hr>
+<div class="card-group" style="margin: 3%;">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Expertise for project {{project}}</h5>
+            <p class="card-text">{{expertise.description}}</p>
+            <ul>
+                <a href="">tutaj link do zdjęcia</a>
+                <hr>
+                <a href="">tutaj link do zdjęcia</a>
+                <hr>
+                <a href="">tutaj link do zdjęcia</a>
+                <hr>
+                <a href="">tutaj link do zdjęcia</a>
+            </ul>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">Tutaj data utworzenia</small>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Karta po wycenie</h5>
+            <p class="card-text">Kiedy wycena zostanie zaakceptowana, wyświetli tutaj podsumowanie projektu.</p>
+            <hr>
+            <a href="" class="card-text">link do szczegółów rzeczy do zrobienia przy projekcie</a>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">Data dodania</small>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Podsumowanie projektu</h5>
+            <p class="card-text">Po zakończeniu projektu wyświetli status jako zokończony
+                wraz z linkiem do zdjęć zakończonego projektu</p>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">Data zakończenia projektu</small>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

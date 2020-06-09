@@ -110,15 +110,18 @@ def create_project(request):
     return render(request, 'create_project.html', context)
 
 
-def create_expertise(request):
+def create_expertise(request, pk):
+    project = Project.objects.get(id=pk)
     form = CreateExpertiseForm()
 
     if request.method == "POST":
         forms = CreateExpertiseForm(request.POST, request.FILES)
         if forms.is_valid():
-            forms.save()
+            form = forms.save(commit=False)
+            form.project = project
+            form.save()
 
-            return redirect('admin_panel')
+            return redirect('panel')
 
     context = {'form': form}
 
@@ -137,8 +140,10 @@ def client_preview(request, pk):
 def project_preview(request,pk):
 
     project = Project.objects.get(id=pk)
-    expertise = Expertise.objects.filter(project=project)
+    expertise = Expertise.objects.get(project=project)
+    employees = project.employee.all()
 
-    context = {'project': project, 'expertise': expertise}
+    context = {'project': project, 'expertise': expertise, 'employees': employees}
+
     return render(request, 'project_preview.html', context)
 

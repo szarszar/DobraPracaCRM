@@ -4,9 +4,9 @@
 
 {% for project in projects %}
 
-<ul><a href="{% url 'project' project.id %}">{{project}}</a>
-<button type="button" class="btn btn-outline-info">Add expertise</button>
+<ul><span><a href="{% url 'project' project.id %}" class="btn btn-outline-secondary">{{project}}</a>
 </ul>
+<hr>
 {% endfor %}
 
 {% endblock %}

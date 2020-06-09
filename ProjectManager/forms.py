@@ -26,3 +26,4 @@ class CreateExpertiseForm(ModelForm):
     class Meta:
         model = Expertise
         fields = '__all__'
+        exclude = ('project',)
