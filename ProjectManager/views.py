@@ -62,7 +62,14 @@ def logout_user(request):
 
 
 def panel(request):
-    return render(request, 'employee_panel.html')
+
+    employee = Employee.objects.get(user=request.user)
+    projects = Project.objects.filter(employee=employee)
+    print(projects)
+
+    context = {'projects': projects}
+
+    return render(request, 'employee_panel.html', context)
 
 
 def admin_panel(request):
