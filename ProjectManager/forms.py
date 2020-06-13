@@ -22,8 +22,8 @@ class CreateProjectForm(ModelForm):
         fields = '__all__'
 
 
-class CreateExpertiseForm(ModelForm):
+class CreateStageDetailForm(ModelForm):
     class Meta:
-        model = Expertise
+        model = StageDetail
         fields = '__all__'
         exclude = ('project',)

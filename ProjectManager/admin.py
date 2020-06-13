@@ -12,14 +12,14 @@ class ClientAdmin(admin.ModelAdmin):
 
 
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ['client', 'city', 'street', 'street_number', 'date_created']
+    list_display = ['client', 'city', 'address', 'date_created']
 
 
-class ExpertiseAdmin(admin.ModelAdmin):
+class StageDetailAdmin(admin.ModelAdmin):
     list_display = ['project']
 
 
-admin.site.register(Expertise, ExpertiseAdmin)
+admin.site.register(StageDetail, StageDetailAdmin)
 admin.site.register(Employee, EmployeeAdmin)
 admin.site.register(Client, ClientAdmin)
 admin.site.register(Project, ProjectAdmin)

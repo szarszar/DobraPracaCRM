@@ -10,9 +10,16 @@ class Employee(models.Model):
         ('Vacation', 'Vacation')
     ]
 
+    group_choices = [
+        ('Washer', 'Washer'),
+        ('Painter', 'Painter'),
+        ('Expert', 'Expert')
+    ]
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=24, null=True)
     status = models.CharField(max_length=12, choices=status_choices)
+    group = models.CharField(max_length=10, choices=group_choices)
 
     def __str__(self):
         name = f"{self.user.first_name} {self.user.last_name}"
@@ -21,12 +28,13 @@ class Employee(models.Model):
 
 class Client(models.Model):
 
-    first_name = models.CharField(max_length=24)
-    last_name = models.CharField(max_length=24)
+    company_name = models.CharField(max_length=24, null=True)
+    first_name = models.CharField(max_length=24, null=True)
+    last_name = models.CharField(max_length=24, null=True)
     email = models.CharField(max_length=48)
+    phone_number = models.CharField(max_length=48)
     city = models.CharField(max_length=24)
-    street = models.CharField(max_length=24)
-    street_number = models.CharField(max_length=10)
+    address = models.CharField(max_length=24)
 
     def __str__(self):
         name = f"{self.first_name} {self.last_name}"
@@ -35,27 +43,58 @@ class Client(models.Model):
 
 class Project(models.Model):
 
+    status_choices = [
+        ('New', 'New'),
+        ('Ready to wash', 'Ready to wash'),
+        ('During wash', 'During wash'),
+        ('Ready to paint', 'Ready to paint'),
+        ('In painting', 'In painting'),
+        ('Finished', 'Finished'),
+    ]
+
+    advance_choices = [
+        ('1', 'Some description'),
+        ('2', 'Some description'),
+        ('3', 'Some description'),
+        ('4', 'Some description'),
+        ('5', 'Some description'),
+        ('7', 'Some description'),
+        ('8', 'Some description'),
+        ('9', 'Some description'),
+
+    ]
+
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     city = models.CharField(max_length=24)
-    street = models.CharField(max_length=24)
-    street_number = models.CharField(max_length=10)
-    employee = models.ManyToManyField(Employee)
+    address = models.CharField(max_length=24)
     date_created = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=14, choices=status_choices, default="New")
+    status_advance = models.CharField(max_length=14, choices=advance_choices)
+    employees = models.ManyToManyField(Employee)
+    update_date = models.DateField(auto_now=True)
+    lift_needed = models.BooleanField(default=False)
 
     def __str__(self):
-        name = f"{self.client.last_name} project in {self.city}"
+        name = f"{self.client.last_name} project in {self.city},{self.address}"
         return name
 
 
-class Expertise(models.Model):
+class StageDetail(models.Model):
 
     project = models.OneToOneField(Project, on_delete=models.CASCADE)
-    description = models.TextField()
-    image_1 = models.ImageField()
-    image_2 = models.ImageField()
-    image_3 = models.ImageField()
-    image_4 = models.ImageField()
+    description = models.TextField(null=True)
+    image_1 = models.ImageField(null=True)
+    image_2 = models.ImageField(null=True)
+    image_3 = models.ImageField(null=True)
+    image_4 = models.ImageField(null=True)
 
+
+class Expense(models.Model):
+
+    project = models.OneToOneField(Project, on_delete=models.CASCADE)
+    image = models.ImageField()
+    description = models.TextField(null=True)
+    cost = models.IntegerField()
 
 
 
