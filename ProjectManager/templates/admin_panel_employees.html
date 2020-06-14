@@ -1,0 +1,28 @@
+{% extends 'index.html' %}
+{% block content %}
+
+{% include 'admin_panel.html' %}
+
+
+{% for employee in employees %}
+<div class="accordion" id="accordionExample">
+    <div class="card">
+        <div class="card-header" id="headingOne">
+            <h2 class="mb-0">
+                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"
+                        data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    {{employee}}
+                </button>
+            </h2>
+        </div>
+
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div class="card-body">
+                <button type="button" class="btn btn-success btn-lg">Large button</button>
+                <button type="button" class="btn btn-primary btn-lg">Large button</button>
+                <button type="button" class="btn btn-danger btn-lg">Large button</button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% endblock %}

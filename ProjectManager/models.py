@@ -53,14 +53,15 @@ class Project(models.Model):
     ]
 
     advance_choices = [
-        ('1', 'Some description'),
-        ('2', 'Some description'),
-        ('3', 'Some description'),
-        ('4', 'Some description'),
-        ('5', 'Some description'),
-        ('7', 'Some description'),
-        ('8', 'Some description'),
-        ('9', 'Some description'),
+        ('1', '1'),
+        ('2', '2'),
+        ('3', '3'),
+        ('4', '4'),
+        ('5', '5'),
+        ('6', '6'),
+        ('7', '7'),
+        ('8', '8'),
+        ('9', '9'),
 
     ]
 

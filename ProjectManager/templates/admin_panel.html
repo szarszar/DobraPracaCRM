@@ -1,0 +1,41 @@
+<div class="container text-center" style="margin-top: 10%;">
+    <div class="row">
+        <div class="col-sm">
+            <div class="dropdown">
+                <button class="btn btn-warning dropdown-toggle btn-block" type="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Employees
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="{% url 'register' %}">Add employee</a>
+                    <a class="dropdown-item" href="{% url 'admin_panel' employees %}">Employees list</a>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-sm">
+            <div class="dropdown">
+                <button class="btn btn-warning dropdown-toggle btn-block" type="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Clients
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="{% url 'create_client' %}">Add client</a>
+                    <a class="dropdown-item" href="{% url 'admin_panel' clients %}">Clients list</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm">
+            <div class="dropdown">
+                <button class="btn btn-warning dropdown-toggle btn-block" type="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Projects
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="{% url 'create_project' %}">Add project</a>
+                    <a class="dropdown-item" href="{% url 'admin_panel' projects %}">Projects list</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

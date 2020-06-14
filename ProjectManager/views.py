@@ -21,6 +21,7 @@ def register_employee(request):
     if request.method == "POST":
         forms = CreateUserForm(request.POST)
         phone_number = request.POST.get('PhoneNumber', '')
+        group = request.POST.get('group', '')
         if forms.is_valid():
             user = forms.save()
             username = forms.cleaned_data.get("username")
@@ -28,7 +29,8 @@ def register_employee(request):
             Employee.objects.create(
                 user=user,
                 status='Active',
-                phone_number=phone_number
+                phone_number=phone_number,
+                group=group,
 
             )
             messages.success(request, 'Konto dla ' + username + ' zostało utworzone')
@@ -65,19 +67,24 @@ def panel(request):
 
     employee = Employee.objects.get(user=request.user)
     projects = Project.objects.filter(employee=employee)
-    print(projects)
 
     context = {'projects': projects}
 
     return render(request, 'employee_panel.html', context)
 
 
-def admin_panel(request):
+def admin_panel(request,pk):
     clients = Client.objects.all()
     projects = Project.objects.all()
+    employees = Employee.objects.all()
 
-    context = {'clients': clients, 'projects': projects}
-    return render(request, 'admin_panel.html', context)
+    context = {'clients': clients, 'projects': projects, 'employees': employees}
+    if pk == 'clients':
+        return render(request, 'admin_panel_clients.html', context)
+    elif pk == 'projects':
+        return render(request, 'admin_panel_projects.html', context)
+    elif pk == 'employees':
+        return render(request, 'admin_panel_employees.html', context)
 
 
 def create_client(request):

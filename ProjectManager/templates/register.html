@@ -1,0 +1,43 @@
+{% extends 'index.html' %}
+{% block content %}
+<div class="container" style="margin: auto; max-width: 480px; margin-top: 5%;">
+    <form method="POST" action="">
+        {% csrf_token %}
+        {% for field in forms %}
+
+        <div class="card text-center">
+            <div class="card-header">
+                {{field.label}}
+            </div>
+            <div class="card-body">
+                {{field}}
+            </div>
+        </div>
+        {% endfor %}
+        <div class="card text-center">
+            <div class="card-header">
+                <label for="PhoneNumber">Phone number:</label>
+            </div>
+            <div class="card-body">
+                <input type="text" class="form-control" name="PhoneNumber" id="PhoneNumber" placeholder="Only Digits">
+            </div>
+        </div>
+        <div class="card text-center">
+            <div class="card-header">
+                <label for="group">Group:</label>
+            </div>
+            <div class="card-body">
+                <select class="form-control" name="group" id="group">
+                    <option>Washer</option>
+                    <option>Painter</option>
+                    <option>Expert</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-large btn-success pull-right text-center">Register</button>
+        </div>
+
+        {{forms.errors}}
+
+    </form>
+</div>
+{% endblock %}

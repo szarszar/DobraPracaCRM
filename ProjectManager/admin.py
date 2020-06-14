@@ -2,7 +2,6 @@ from django.contrib import admin
 from .models import *
 
 
-
 class EmployeeAdmin(admin.ModelAdmin):
     list_display = ['user', 'status']
 
@@ -19,9 +18,14 @@ class StageDetailAdmin(admin.ModelAdmin):
     list_display = ['project']
 
 
+class ExpenseAdmin(admin.ModelAdmin):
+    list_display = ['project', 'cost']
+
+
 admin.site.register(StageDetail, StageDetailAdmin)
 admin.site.register(Employee, EmployeeAdmin)
 admin.site.register(Client, ClientAdmin)
 admin.site.register(Project, ProjectAdmin)
+admin.site.register(Expense, ExpenseAdmin)
 
 
