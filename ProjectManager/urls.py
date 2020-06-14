@@ -13,7 +13,8 @@ urlpatterns = [
     path('create_project/<str:pk>', views.create_project, name='create_project'),
     path('create_expertise/<str:pk>', views.create_expertise, name='create_expertise'),
     path('client_preview/<str:pk>', views.client_preview, name='client'),
-    path('project_preview/<str:pk>', views.project_preview, name='project')
+    path('project_preview/<str:pk>', views.project_preview, name='project'),
+    path('delete_objects/<str:pk>/<str:sc>', views.delete_object, name='delete'),
 
 
 

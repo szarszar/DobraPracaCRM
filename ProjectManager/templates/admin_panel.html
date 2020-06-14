@@ -8,7 +8,7 @@
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item" href="{% url 'register' %}">Add employee</a>
-                    <a class="dropdown-item" href="{% url 'admin_panel' employees %}">Employees list</a>
+                    <a class="dropdown-item" href="{% url 'admin_panel' 'employees' %}">Employees list</a>
 
                 </div>
             </div>
@@ -21,7 +21,7 @@
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item" href="{% url 'create_client' %}">Add client</a>
-                    <a class="dropdown-item" href="{% url 'admin_panel' clients %}">Clients list</a>
+                    <a class="dropdown-item" href="{% url 'admin_panel' 'clients' %}">Clients list</a>
                 </div>
             </div>
         </div>
@@ -32,7 +32,7 @@
                     Projects
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="{% url 'admin_panel' projects %}">Projects list</a>
+                    <a class="dropdown-item" href="{% url 'admin_panel' 'projects' %}">Projects list</a>
                 </div>
             </div>
         </div>

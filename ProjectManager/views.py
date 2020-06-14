@@ -24,7 +24,6 @@ def register_employee(request):
         group = request.POST.get('group', '')
         if forms.is_valid():
             user = forms.save()
-            username = forms.cleaned_data.get("username")
 
             Employee.objects.create(
                 user=user,
@@ -95,7 +94,7 @@ def create_client(request):
         if forms.is_valid():
             forms.save()
 
-            return redirect('admin_panel')
+            return redirect('admin_panel', 'clients')
 
     context = {'form': form}
 
@@ -141,9 +140,10 @@ def create_expertise(request, pk):
 def client_preview(request, pk):
 
     client = Client.objects.get(id=pk)
+    form = CreateClientForm(instance=client)
     projects = Project.objects.filter(client=client)
 
-    context = {'client': client, 'projects': projects}
+    context = {'client': client, 'projects': projects, 'form': form}
     return render(request, 'client_preview.html', context)
 
 
@@ -165,4 +165,13 @@ def project_preview(request,pk):
         context = {'project': project, 'employees': employees}
 
         return render(request, 'project_preview.html', context)
+
+
+def delete_object(request, pk, sc):
+
+    thing = pk.objects.get(id=sc)
+    thing.delete()
+
+    return redirect('admin_panel', 'clients')
+
 

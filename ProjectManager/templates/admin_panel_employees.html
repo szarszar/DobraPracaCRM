@@ -1,28 +1,41 @@
 {% extends 'index.html' %}
 {% block content %}
-
 {% include 'admin_panel.html' %}
-
 
 {% for employee in employees %}
 <div class="accordion" id="accordionExample">
     <div class="card">
-        <div class="card-header" id="headingOne">
+        <div class="card-header" id="headingTwo">
             <h2 class="mb-0">
-                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"
-                        data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse"
+                        data-target="#employee{{employee.id}}" aria-expanded="false" aria-controls="employee{{employee.id}}">
                     {{employee}}
                 </button>
             </h2>
         </div>
-
-        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+        <div id="employee{{employee.id}}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
             <div class="card-body">
-                <button type="button" class="btn btn-success btn-lg">Large button</button>
-                <button type="button" class="btn btn-primary btn-lg">Large button</button>
-                <button type="button" class="btn btn-danger btn-lg">Large button</button>
+                <div class="container">
+                    {{employee}}
+                    <hr>
+                    <p>Mobile: {{employee.phone_number}}</p>
+                    <p>Mail: {{employee.user.username}}</p>
+                    <p>Status: {{employee.status}}</p>
+                    <p>Group: {{employee.group}}</p>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm">
+                                <a href="" class="btn btn-outline-info">See projects</a>
+                            </div>
+                            <div class="col-sm">
+                                <a href="" class="btn btn-outline-info">Edit info</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    {% endfor %}
-    {% endblock %}
+</div>
+{% endfor %}
+{% endblock %}

@@ -1,28 +1,45 @@
 {% extends 'index.html' %}
 {% block content %}
-
 {% include 'admin_panel.html' %}
-
 
 {% for project in projects %}
 <div class="accordion" id="accordionExample">
     <div class="card">
-        <div class="card-header" id="headingOne">
+        <div class="card-header" id="headingTwo">
             <h2 class="mb-0">
-                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"
-                        data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse"
+                        data-target="#project{{projects.id}}" aria-expanded="false" aria-controls="project{{project.id}}">
                     {{project}}
                 </button>
             </h2>
         </div>
-
-        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+        <div id="project{{projects.id}}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
             <div class="card-body">
-                <button type="button" class="btn btn-success btn-lg">Large button</button>
-                <button type="button" class="btn btn-primary btn-lg">Large button</button>
-                <button type="button" class="btn btn-danger btn-lg">Large button</button>
+                <div class="container">
+                    {{project.client}}
+                    <hr>
+                    <p>{{project.city}} {{project.address}}</p>
+                    <p>Status: {{project.status}} {{project.status_advance}}</p>
+                    <hr>
+                    <p>Created: {{project.date_created}}</p>
+                    <p>Last update: {{project.update_date}}</p>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm">
+                                <a href="" class="btn btn-outline-info">Edit info</a>
+                            </div>
+                            <div class="col-sm">
+                                <a href="" class="btn btn-outline-info">Add stage detail</a>
+                            </div>
+                            <div class="col-sm">
+                                <a href="" class="btn btn-outline-info">Add expense</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    {% endfor %}
-    {% endblock %}
+</div>
+{% endfor %}
+{% endblock %}
