@@ -5,22 +5,38 @@
 {% for client in clients %}
 <div class="accordion" id="accordionExample">
     <div class="card">
-        <div class="card-header" id="headingOne">
+        <div class="card-header" id="headingTwo">
             <h2 class="mb-0">
-                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"
-                        data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse"
+                        data-target="#client{{client.id}}" aria-expanded="false" aria-controls="client{{client.id}}">
                     {{client}}
                 </button>
             </h2>
         </div>
-
-        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+        <div id="client{{client.id}}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
             <div class="card-body">
-                <button type="button" class="btn btn-success btn-lg">Large button</button>
-                <button type="button" class="btn btn-primary btn-lg">Large button</button>
-                <button type="button" class="btn btn-danger btn-lg">Large button</button>
+                <div class="container">
+                    {{client.company_name}} {{client.first_name}} {{client.last_name}}
+                    <hr>
+                    <p>{{client.email}} {{client.phone_number}}</p>
+                    <p>{{client.city}} {{client.adress}}</p>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm">
+                                <a href="" class="btn btn-outline-info">Edit info</a>
+                            </div>
+                            <div class="col-sm">
+                                <a href="{% url 'create_project' client.id%}" class="btn btn-outline-info">Add project</a>
+                            </div>
+                            <div class="col-sm">
+                                <a href="" class="btn btn-outline-danger">Delete client</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    {% endfor %}
-    {% endblock %}
+</div>
+{% endfor %}
+{% endblock %}

@@ -28,16 +28,16 @@ class Employee(models.Model):
 
 class Client(models.Model):
 
-    company_name = models.CharField(max_length=24, null=True)
-    first_name = models.CharField(max_length=24, null=True)
-    last_name = models.CharField(max_length=24, null=True)
+    company_name = models.CharField(max_length=24, blank=True)
+    first_name = models.CharField(max_length=24, blank=True)
+    last_name = models.CharField(max_length=24, blank=True)
     email = models.CharField(max_length=48)
     phone_number = models.CharField(max_length=48)
     city = models.CharField(max_length=24)
     address = models.CharField(max_length=24)
 
     def __str__(self):
-        name = f"{self.first_name} {self.last_name}"
+        name = f"{self.company_name}{self.first_name} {self.last_name}"
         return name
 
 

@@ -102,13 +102,16 @@ def create_client(request):
     return render(request, 'create_client.html', context)
 
 
-def create_project(request):
+def create_project(request, pk):
     form = CreateProjectForm()
+    client = Client.objects.get(id=pk)
 
     if request.method == "POST":
-        forms = CreateProjectForm(request.POST)
-        if forms.is_valid():
-            forms.save()
+        form = CreateProjectForm(request.POST)
+        if form.is_valid():
+            project = form.save(commit=False)
+            project.client = client
+            project.save()
 
             return redirect('admin_panel')
 

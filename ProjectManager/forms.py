@@ -23,6 +23,7 @@ class CreateProjectForm(ModelForm):
     class Meta:
         model = Project
         fields = '__all__'
+        exclude = ('client', 'status_advance')
 
 
 class CreateStageDetailForm(ModelForm):
