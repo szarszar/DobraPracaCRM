@@ -23,11 +23,18 @@ class CreateProjectForm(ModelForm):
     class Meta:
         model = Project
         fields = '__all__'
-        exclude = ('client', 'status_advance')
+        exclude = ('client',)
 
 
 class CreateStageDetailForm(ModelForm):
     class Meta:
         model = StageDetail
+        fields = '__all__'
+        exclude = ('project',)
+
+
+class CreateExpenseForm(ModelForm):
+    class Meta:
+        model = Expense
         fields = '__all__'
         exclude = ('project',)

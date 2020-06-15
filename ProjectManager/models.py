@@ -70,10 +70,11 @@ class Project(models.Model):
     address = models.CharField(max_length=24)
     date_created = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=14, choices=status_choices, default="New")
-    status_advance = models.CharField(max_length=14, choices=advance_choices)
+    status_advance = models.CharField(max_length=14, choices=advance_choices, blank=True)
     employees = models.ManyToManyField(Employee)
-    update_date = models.DateField(auto_now=True)
+    update_date = models.DateField(auto_now=True, blank=True)
     lift_needed = models.BooleanField(default=False)
+    description = models.TextField(null=True)
 
     def __str__(self):
         name = f"{self.client.last_name} project in {self.city},{self.address}"

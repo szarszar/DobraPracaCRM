@@ -32,9 +32,10 @@ def register_employee(request):
                 group=group,
 
             )
-            messages.success(request, 'Konto dla ' + username + ' zostało utworzone')
 
-            return redirect('admin_panel')
+            messages.success(request, f"Account for {user.first_name} {user.last_name} has been created")
+
+            return redirect('admin_panel', 'employees')
 
     context = {'forms': forms}
     return render(request, 'register.html', context)
@@ -92,8 +93,9 @@ def create_client(request):
     if request.method == "POST":
         forms = CreateClientForm(request.POST)
         if forms.is_valid():
-            forms.save()
+            client = forms.save()
 
+            messages.success(request, f"Entry for {client.company_name} {client.first_name} {client.last_name} has been created")
             return redirect('admin_panel', 'clients')
 
     context = {'form': form}
@@ -102,8 +104,8 @@ def create_client(request):
 
 
 def create_project(request, pk):
-    form = CreateProjectForm()
     client = Client.objects.get(id=pk)
+    form = CreateProjectForm(instance=client)
 
     if request.method == "POST":
         form = CreateProjectForm(request.POST)
@@ -112,29 +114,29 @@ def create_project(request, pk):
             project.client = client
             project.save()
 
-            return redirect('admin_panel')
+            return redirect('admin_panel', 'projects')
 
     context = {'form': form}
 
     return render(request, 'create_project.html', context)
 
 
-def create_expertise(request, pk):
+def create_stage_detail(request, pk):
     project = Project.objects.get(id=pk)
-    form = CreateExpertiseForm()
+    form = CreateStageDetailForm()
 
     if request.method == "POST":
-        forms = CreateExpertiseForm(request.POST, request.FILES)
+        forms = CreateStageDetailForm(request.POST, request.FILES)
         if forms.is_valid():
             form = forms.save(commit=False)
             form.project = project
             form.save()
 
-            return redirect('panel')
+            return redirect('project', pk)
 
     context = {'form': form}
 
-    return render(request, 'create_expertise.html', context)
+    return render(request, 'create_stage_detail.html', context)
 
 
 def client_preview(request, pk):
@@ -147,25 +149,26 @@ def client_preview(request, pk):
     return render(request, 'client_preview.html', context)
 
 
-def project_preview(request,pk):
+def project_preview(request, pk):
 
     project = Project.objects.get(id=pk)
-    try:
-        expertise = Expertise.objects.get(project=project)
-        employees = project.employee.all()
+    expenses = Expense.objects.filter(project=project)
+    stage_details = StageDetail.objects.filter(project=project)
+    client = project.client
+    form = CreateProjectForm(instance=project)
 
-        context = {'project': project, 'expertise': expertise, 'employees': employees}
+    if request.method == 'POST':
+        form = CreateProjectForm(request.POST, instance=project)
+        if form.is_valid():
+            project = form.save(commit=False)
+            project.client = client
+            project.save()
 
-        return render(request, 'project_preview.html', context)
+            return redirect('project', pk)
 
-    except:
+    context = {'project': project, 'expenses': expenses, 'stage_details': stage_details, 'form': form}
 
-        employees = project.employee.all()
-
-        context = {'project': project, 'employees': employees}
-
-        return render(request, 'project_preview.html', context)
-
+    return render(request, 'project_preview.html', context)
 
 def delete_object(request, pk, sc):
 

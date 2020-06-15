@@ -1,0 +1,66 @@
+{% extends 'index.html' %}
+{% block content %}
+<div class="container" style="margin: auto; margin-top: 5%;">
+    <div class="row">
+        <div class="col-sm">
+            <a href="" class="btn btn-primary btn-lg btn-block">Add expense</a>
+        </div>
+        <div class="col-sm">
+            <a href="{% url 'create_stage_detail' project.id %}" class="btn btn-primary btn-lg btn-block">Add stage detail</a>
+        </div>
+    </div>
+    <hr>
+</div>
+<div class="container" style="max-width: 720px; margin: auto; margin-top: 5%;">
+    <div class="card text-center">
+        <div class="card-header">
+            {{project}}
+        </div>
+        <div class="card-body">
+            <form method="POST" action="">
+                {% csrf_token %}
+                <h5 class="card-title">Status: {{form.status}}</h5>
+                {% if project.status == 'In painting' %}
+                <p>Advanced status: {{project.status_advance}}</p>
+                <p>Change:</p>
+                <select class="form-control" name="statusAdvance" id="statusAdvance">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                </select>
+                {% endif %}
+                <hr>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm">
+                            <p>Client: {{project.client}}</p>
+                            <p>Address: {{form.city}} {{form.address}} </p>
+                            <p>Description: {{form.description}}</p>
+                        </div>
+                        <div class="col-sm">
+                            <p>Is lift needed: {{form.lift_needed}} </p>
+                            <ul>
+                                {{form.employees}}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit"
+                        class="btn btn-large btn-success pull-right text-center btn-block">
+                    Save changes
+                </button>
+            </form>
+        </div>
+        <div class="card-footer text-muted">
+            <p>Project created: {{project.date_created}}</p>
+            <p>Last update: {{project.update_date}}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
