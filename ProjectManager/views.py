@@ -5,10 +5,9 @@ from .forms import *
 
 
 def home(request):
-
     if request.user is not None:
         if request.user.is_staff:
-            return redirect('admin_panel')
+            return redirect('admin_panel', 'clients')
         else:
             return redirect('panel')
     else:
@@ -42,7 +41,6 @@ def register_employee(request):
 
 
 def login_page(request):
-
     if request.method == 'POST':
         username = request.POST.get('username', '')
         password = request.POST.get('password', '')
@@ -64,7 +62,6 @@ def logout_user(request):
 
 
 def panel(request):
-
     employee = Employee.objects.get(user=request.user)
     projects = Project.objects.filter(employee=employee)
 
@@ -73,7 +70,7 @@ def panel(request):
     return render(request, 'employee_panel.html', context)
 
 
-def admin_panel(request,pk):
+def admin_panel(request, pk):
     clients = Client.objects.all()
     projects = Project.objects.all()
     employees = Employee.objects.all()
@@ -95,7 +92,8 @@ def create_client(request):
         if forms.is_valid():
             client = forms.save()
 
-            messages.success(request, f"Entry for {client.company_name} {client.first_name} {client.last_name} has been created")
+            messages.success(request,
+                             f"Entry for {client.company_name} {client.first_name} {client.last_name} has been created")
             return redirect('admin_panel', 'clients')
 
     context = {'form': form}
@@ -126,13 +124,21 @@ def create_stage_detail(request, pk):
     form = CreateStageDetailForm()
 
     if request.method == "POST":
-        forms = CreateStageDetailForm(request.POST, request.FILES)
+        forms = CreateStageDetailForm(request.POST)
+
         if forms.is_valid():
             form = forms.save(commit=False)
             form.project = project
             form.save()
 
-            return redirect('project', pk)
+        for file in request.FILES.getlist('images'):
+            instance = StageDetailImages(
+                stage_detail=StageDetail.objects.get(id=form.id),
+                image=file
+            )
+            instance.save()
+
+        return redirect('project', pk)
 
     context = {'form': form}
 
@@ -140,7 +146,6 @@ def create_stage_detail(request, pk):
 
 
 def client_preview(request, pk):
-
     client = Client.objects.get(id=pk)
     form = CreateClientForm(instance=client)
     projects = Project.objects.filter(client=client)
@@ -150,12 +155,12 @@ def client_preview(request, pk):
 
 
 def project_preview(request, pk):
-
     project = Project.objects.get(id=pk)
     expenses = Expense.objects.filter(project=project)
     stage_details = StageDetail.objects.filter(project=project)
     client = project.client
     form = CreateProjectForm(instance=project)
+    one = Employee
 
     if request.method == 'POST':
         form = CreateProjectForm(request.POST, instance=project)
@@ -170,11 +175,11 @@ def project_preview(request, pk):
 
     return render(request, 'project_preview.html', context)
 
+
 def delete_object(request, pk, sc):
 
     thing = pk.objects.get(id=sc)
     thing.delete()
 
+
     return redirect('admin_panel', 'clients')
-
-

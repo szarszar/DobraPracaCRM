@@ -85,10 +85,6 @@ class StageDetail(models.Model):
 
     project = models.OneToOneField(Project, on_delete=models.CASCADE)
     description = models.TextField(null=True)
-    image_1 = models.ImageField(null=True)
-    image_2 = models.ImageField(null=True)
-    image_3 = models.ImageField(null=True)
-    image_4 = models.ImageField(null=True)
 
 
 class Expense(models.Model):
@@ -97,6 +93,13 @@ class Expense(models.Model):
     image = models.ImageField()
     description = models.TextField(null=True)
     cost = models.IntegerField()
+
+
+class StageDetailImages(models.Model):
+
+    stage_detail = models.ForeignKey(StageDetail, on_delete=models.CASCADE, related_name='images')
+    image = models.FileField(upload_to="images/")
+    uploaded_at = models.DateTimeField(auto_now_add=True)
 
 
 

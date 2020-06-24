@@ -1,7 +1,7 @@
 {% extends 'index.html' %}
 {% block content %}
 <div class="container" style="margin: auto; max-width: 480px; margin-top: 5%;">
-    <form method="POST" action="">
+    <form method="POST" action="" enctype="multipart/form-data">
         {% csrf_token %}
         {% for field in form %}
 
@@ -16,10 +16,14 @@
         {% endfor %}
         <div class="card text-center">
             <div class="card-header">
+                <input type="file" name="images" multiple>
+            </div>
+        </div>
+        <div class="card text-center">
+            <div class="card-header">
                 <button type="submit" class="btn btn-large btn-success pull-right text-center">Register</button>
             </div>
         </div>
-
 </div>
 
 {{forms.errors}}
