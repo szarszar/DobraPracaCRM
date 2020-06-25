@@ -85,6 +85,11 @@ class StageDetail(models.Model):
 
     project = models.OneToOneField(Project, on_delete=models.CASCADE)
     description = models.TextField(null=True)
+    status = models.CharField(max_length=14, default="New")
+
+    def __str__(self):
+        name = f"{self.project} detail for {self.status} stage"
+        return name
 
 
 class Expense(models.Model):
@@ -93,6 +98,10 @@ class Expense(models.Model):
     image = models.ImageField()
     description = models.TextField(null=True)
     cost = models.IntegerField()
+
+    def __str__(self):
+        name = f"Expense nr {self.id} for {self.project}"
+        return name
 
 
 class StageDetailImages(models.Model):

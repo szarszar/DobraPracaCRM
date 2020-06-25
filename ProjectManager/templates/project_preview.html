@@ -3,10 +3,11 @@
 <div class="container" style="margin: auto; margin-top: 5%;">
     <div class="row">
         <div class="col-sm">
-            <a href="" class="btn btn-primary btn-lg btn-block">Add expense</a>
+            <a href="{% url 'create_expense' project.id %}" class="btn btn-primary btn-lg btn-block">Add expense</a>
         </div>
         <div class="col-sm">
-            <a href="{% url 'create_stage_detail' project.id %}" class="btn btn-primary btn-lg btn-block">Add stage detail</a>
+            <a href="{% url 'create_stage_detail' project.id %}" class="btn btn-primary btn-lg btn-block">Add stage
+                detail</a>
         </div>
     </div>
     <hr>
@@ -60,6 +61,70 @@
         <div class="card-footer text-muted">
             <p>Project created: {{project.date_created}}</p>
             <p>Last update: {{project.update_date}}</p>
+        </div>
+    </div>
+</div>
+<hr>
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            {% for expense in expenses %}
+            <div class="accordion" id="accordionExample2">
+                <div class="card">
+                    <div class="card-header" id="headingThree">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link btn-block text-left collapsed" type="button"
+                                    data-toggle="collapse"
+                                    data-target="#expense{{expense.id}}" aria-expanded="false"
+                                    aria-controls="expense{{expense.id}}">
+                                {{expense}}
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="expense{{expense.id}}" class="collapse" aria-labelledby="headingThree"
+                         data-parent="#accordionExample2">
+                        <div class="card-body">
+                            <div class="container">
+                                {{expense.project}}
+                                <hr>
+                                <p>{{expense.description}}</p>
+                                <p>{{expense.image}}</p>
+                                <hr>
+                                <p>{{expense.cost}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-sm">
+            {% for detail in stage_details %}
+            <div class="accordion" id="accordionExample3">
+                <div class="card">
+                    <div class="card-header" id="headingFour">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link btn-block text-left collapsed" type="button"
+                                    data-toggle="collapse"
+                                    data-target="#detail{{detail.id}}" aria-expanded="false"
+                                    aria-controls="detail{{detail.id}}">
+                                {{detail}}
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="detail{{detail.id}}" class="collapse" aria-labelledby="headingFour"
+                         data-parent="#accordionExample3">
+                        <div class="card-body">
+                            <div class="container">
+                                {{detail.project}}
+                                <hr>
+                                <p>{{detail.description}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </div>
 </div>

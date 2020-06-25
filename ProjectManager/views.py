@@ -107,10 +107,12 @@ def create_project(request, pk):
 
     if request.method == "POST":
         form = CreateProjectForm(request.POST)
+        employees = request.POST.getlist('employees')
         if form.is_valid():
             project = form.save(commit=False)
             project.client = client
             project.save()
+            project.employees.set(employees)
 
             return redirect('admin_panel', 'projects')
 
@@ -124,7 +126,7 @@ def create_stage_detail(request, pk):
     form = CreateStageDetailForm()
 
     if request.method == "POST":
-        forms = CreateStageDetailForm(request.POST)
+        forms = CreateStageDetailForm(request.POST, request.FILES)
 
         if forms.is_valid():
             form = forms.save(commit=False)
@@ -160,14 +162,16 @@ def project_preview(request, pk):
     stage_details = StageDetail.objects.filter(project=project)
     client = project.client
     form = CreateProjectForm(instance=project)
-    one = Employee
 
     if request.method == 'POST':
         form = CreateProjectForm(request.POST, instance=project)
+        employees = request.POST.getlist('employees')
+
         if form.is_valid():
             project = form.save(commit=False)
             project.client = client
             project.save()
+            project.employees.set(employees)
 
             return redirect('project', pk)
 
@@ -176,10 +180,31 @@ def project_preview(request, pk):
     return render(request, 'project_preview.html', context)
 
 
-def delete_object(request, pk, sc):
+def create_expense(request, pk):
+    project = Project.objects.get(id=pk)
+    form = CreateExpenseForm()
 
-    thing = pk.objects.get(id=sc)
-    thing.delete()
+    if request.method == "POST":
+        forms = CreateExpenseForm(request.POST, request.FILES)
+
+        if forms.is_valid():
+            form = forms.save(commit=False)
+            form.project = project
+            form.save()
+
+        return redirect('project', pk)
+
+    context = {'form': form}
+
+    return render(request, 'create_expense.html', context)
 
 
-    return redirect('admin_panel', 'clients')
+def employee_panel(request):
+
+    projects = Project.objects.all()
+    for project in projects:
+        for employee in project.employees.all():
+            print(employee)
+
+
+    return render(request, 'employee_panel.html')

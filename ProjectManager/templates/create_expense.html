@@ -1,0 +1,28 @@
+{% extends 'index.html' %}
+{% block content %}
+<div class="container" style="margin: auto; max-width: 480px; margin-top: 5%;">
+    <form method="POST" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for field in form %}
+
+        <div class="card text-center">
+            <div class="card-header">
+                {{field.label}}
+            </div>
+            <div class="card-body">
+                {{field}}
+            </div>
+        </div>
+        {% endfor %}
+        <div class="card text-center">
+            <div class="card-header">
+                <button type="submit" class="btn btn-large btn-success pull-right text-center">Register</button>
+            </div>
+        </div>
+</div>
+
+{{forms.errors}}
+
+</form>
+</div>
+{% endblock %}

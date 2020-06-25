@@ -1,6 +1,7 @@
 from django.forms import ModelForm, FileInput
 from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import gettext_lazy as _
+from django import forms
 from .models import *
 
 
@@ -24,6 +25,7 @@ class CreateProjectForm(ModelForm):
         model = Project
         fields = '__all__'
         exclude = ('client',)
+        widgets = {'employees': forms.widgets.CheckboxSelectMultiple()}
 
 
 class CreateStageDetailForm(ModelForm):
