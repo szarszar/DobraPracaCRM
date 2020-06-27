@@ -2,6 +2,11 @@
 {% block content %}
 {% include 'admin_panel.html' %}
 
+<form method="get">
+    {{myFilter.form}}
+    <button type="submit" class="btn btn-large btn-success pull-right text-center">Search</button>
+</form>
+
 {% for project in projects %}
 <div class="accordion" id="accordionExample">
     <div class="card">

@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import *
+from .filters import *
 
 
 def home(request):
@@ -75,7 +76,10 @@ def admin_panel(request, pk):
     projects = Project.objects.all()
     employees = Employee.objects.all()
 
-    context = {'clients': clients, 'projects': projects, 'employees': employees}
+    myFilter = ProjectFilter(request.GET, queryset=projects)
+    projects = myFilter.qs
+
+    context = {'clients': clients, 'projects': projects, 'employees': employees, 'myFilter': myFilter}
     if pk == 'clients':
         return render(request, 'admin_panel_clients.html', context)
     elif pk == 'projects':
@@ -201,10 +205,10 @@ def create_expense(request, pk):
 
 def employee_panel(request):
 
-    projects = Project.objects.all()
-    for project in projects:
-        for employee in project.employees.all():
-            print(employee)
+    user = request.user
+    employee = Employee.objects.get(user=user)
+    projects = Project.objects.filter(employees=employee)
 
+    context = {'projects': projects}
 
-    return render(request, 'employee_panel.html')
+    return render(request, 'employee_panel.html', context)

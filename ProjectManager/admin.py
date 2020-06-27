@@ -3,7 +3,7 @@ from .models import *
 
 
 class EmployeeAdmin(admin.ModelAdmin):
-    list_display = ['user', 'status']
+    list_display = ['user',]
 
 
 class ClientAdmin(admin.ModelAdmin):

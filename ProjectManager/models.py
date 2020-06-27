@@ -3,13 +3,6 @@ from django.contrib.auth.models import User
 
 
 class Employee(models.Model):
-
-    status_choices = [
-        ('Active', 'Active'),
-        ('Not working', 'Not working'),
-        ('Vacation', 'Vacation')
-    ]
-
     group_choices = [
         ('Washer', 'Washer'),
         ('Painter', 'Painter'),
@@ -18,7 +11,6 @@ class Employee(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=24, null=True)
-    status = models.CharField(max_length=12, choices=status_choices)
     group = models.CharField(max_length=10, choices=group_choices)
 
     def __str__(self):
@@ -27,7 +19,6 @@ class Employee(models.Model):
 
 
 class Client(models.Model):
-
     company_name = models.CharField(max_length=24, blank=True)
     first_name = models.CharField(max_length=24, blank=True)
     last_name = models.CharField(max_length=24, blank=True)
@@ -41,8 +32,53 @@ class Client(models.Model):
         return name
 
 
-class Project(models.Model):
+class Valuation(models.Model):
 
+    def file_path(self):
+        return '{0}'.format(self.client.last_name)
+
+    status_choices = [
+        ('Offer needed', 'Offer needed'),
+        ('Meeting was arranged', 'Meeting was arranged'),
+        ('Offer sent', 'Offer sent'),
+    ]
+
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    status = models.CharField(max_length=24)
+    expert = models.OneToOneField(Employee, on_delete=models.CASCADE)
+    offer_file = models.FileField(upload_to=file_path)
+    date_created = models.DateTimeField(auto_now_add=True)
+    last_update = models.DateTimeField(auto_now=True)
+
+
+class ValuationDetails(models.Model):
+    layers_choices = [
+        (1, '1'),
+        (2, '2'),
+        (3, '3'),
+    ]
+
+    valuation = models.ForeignKey(Valuation, on_delete=models.CASCADE)
+    surface_area = models.DecimalField(max_digits=6, decimal_places=2)
+    number_of_layers = models.IntegerField(choices=layers_choices)
+    employees_needed = models.IntegerField(choices=layers_choices)
+    work_hours = models.SmallIntegerField()
+    lift_needed = models.BooleanField(default=False)
+
+
+class Meeting(models.Model):
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    time = models.DateTimeField()
+    address = models.CharField(max_length=45)
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+
+
+class ValuationImages(models.Model):
+    valuation = models.ForeignKey(Valuation, on_delete=models.CASCADE)
+    image = image = models.FileField(upload_to="images/")
+
+
+class Project(models.Model):
     status_choices = [
         ('New', 'New'),
         ('Ready to wash', 'Ready to wash'),
@@ -82,22 +118,21 @@ class Project(models.Model):
 
 
 class StageDetail(models.Model):
-
     project = models.OneToOneField(Project, on_delete=models.CASCADE)
     description = models.TextField(null=True)
     status = models.CharField(max_length=14, default="New")
 
     def __str__(self):
-        name = f"{self.project} detail for {self.status} stage"
+        name = f"Detail for {self.project.status} stage"
         return name
 
 
 class Expense(models.Model):
-
     project = models.OneToOneField(Project, on_delete=models.CASCADE)
     image = models.ImageField()
     description = models.TextField(null=True)
     cost = models.IntegerField()
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         name = f"Expense nr {self.id} for {self.project}"
@@ -105,12 +140,6 @@ class Expense(models.Model):
 
 
 class StageDetailImages(models.Model):
-
     stage_detail = models.ForeignKey(StageDetail, on_delete=models.CASCADE, related_name='images')
     image = models.FileField(upload_to="images/")
     uploaded_at = models.DateTimeField(auto_now_add=True)
-
-
-
-
-

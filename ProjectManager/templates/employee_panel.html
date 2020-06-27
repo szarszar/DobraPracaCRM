@@ -1,1 +1,24 @@
-<h1>panel pracownika</h1>
+{% extends 'index.html' %}
+{% block content%}
+
+
+{% for project in projects %}
+<div class="card" style="margin: aouto; margin-top: 5%;">
+    <div class="card-header">
+        <h3>{{project}}</h3>
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Adress: {{project.city}} {{project.address}}</h5>
+        <p class="card-text">Status: {{project.status}}</p>
+        <ul>
+            {% for employee in project.employees.all %}
+            <li>{{employee}}</li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'project' project.id %}" class="btn btn-primary">Project detail</a>
+    </div>
+</div>
+{% endfor %}
+
+
+{% endblock %}

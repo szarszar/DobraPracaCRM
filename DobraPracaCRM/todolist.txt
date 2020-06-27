@@ -1,0 +1,6 @@
+- pracownik widzi tylko swoje wydatki
+- lista projektów musi mieć statusy "potrzebna wycena(czerwony)" "czeka na ofertę(żółty)", "oferta wysłana(bootstrap info)"
+
+
+- dopisać model spotkanie o wycenę (kto tam pojedzie, dane klienta, kiedy + godzina)
+- każdy stage detail musi mieć przypisane defloutowo kto to zrobił, tak samo wydatek
