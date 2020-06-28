@@ -229,8 +229,29 @@ def employee_panel(request):
 
 
 def add_valuation(request, pk):
-    return render(request, 'add_valuation.html')
+    client = Client.objects.get(id=pk)
+
+    valuation = Valuation.objects.create(
+        client=client,
+        status='New',
+
+    )
+
+    return redirect('valuation', valuation.id)
 
 
 def valuation_preview(request, pk):
-    return render(request, 'valuation_preview.html')
+    valuation = Valuation.objects.get(id=pk)
+    form = CreateValuationForm(instance=valuation)
+    meeting = Meeting.objects.filter(valuation=valuation)
+    details = ValuationDetails.objects.filter(valuation=valuation)
+
+    if request.method == 'POST':
+        form = CreateValuationForm(request.POST, instance=valuation)
+
+        if form.is_valid():
+            form.save()
+
+    context = {'form': form, 'valuation': valuation, 'meeting':meeting, 'details': details}
+
+    return render(request, 'valuation_preview.html', context)

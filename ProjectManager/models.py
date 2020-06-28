@@ -39,15 +39,15 @@ class Valuation(models.Model):
         return '{0}'.format(self.client.last_name)
 
     status_choices = [
-        ('Offer needed', 'Offer needed'),
+        ('New', 'New'),
         ('Meeting was arranged', 'Meeting was arranged'),
         ('Offer sent', 'Offer sent'),
     ]
 
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    status = models.CharField(max_length=24)
-    expert = models.OneToOneField(Employee, on_delete=models.CASCADE)
-    offer_file = models.FileField(upload_to=file_path, blank=True)
+    status = models.CharField(max_length=24, choices=status_choices)
+    offer_file = models.FileField(upload_to=file_path, blank=True, null=True)
+    message = models.TextField(null=True)
     date_created = models.DateTimeField(auto_now_add=True)
     last_update = models.DateTimeField(auto_now=True)
 
@@ -69,9 +69,13 @@ class ValuationDetails(models.Model):
 
 class Meeting(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    time = models.DateTimeField()
-    address = models.CharField(max_length=45)
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    valuation = models.ForeignKey(Valuation, on_delete=models.CASCADE, null=True)
+    date = models.DateField(null=True)
+    time = models.CharField(max_length=5, null=True)
+    city = models.CharField(max_length=24, null=True)
+    address = models.CharField(max_length=24, null=True)
+    zip_code = models.CharField(max_length=6, null=True)
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True)
 
 
 class ValuationImages(models.Model):

@@ -1,8 +1,8 @@
-from django.forms import ModelForm, FileInput
+from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
-from django.utils.translation import gettext_lazy as _
 from django import forms
 from .models import *
+from django.contrib.admin.widgets import AdminDateWidget
 
 
 class CreateUserForm(UserCreationForm):
@@ -40,3 +40,21 @@ class CreateExpenseForm(ModelForm):
         model = Expense
         fields = '__all__'
         exclude = ('project',)
+
+
+class CreateValuationForm(ModelForm):
+    class Meta:
+        model = Valuation
+        fields = '__all__'
+        exclude = ('client',)
+
+
+class CreateMeetingForm(ModelForm):
+    class Meta:
+        model = Meeting
+        fields = '__all__'
+        exclude = ('client',)
+        widgets = {
+            'date': AdminDateWidget()
+        }
+
