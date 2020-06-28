@@ -1,20 +1,122 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    {% load static %}
+    <title>Dobra Praca CRM</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <title>DobraPraca CRM</title>
+
 </head>
-<body>
 
-
-{% block content %}
-{% endblock %}
-
+<body style="background-color: #dbdbd3;">
+<div class="container" style="max-width: 99%; display: inline-grid;">
+    <div class="row ">
+        <nav class="navbar navbar-light bg-light shadow-sm p-3 mb-5 bg-white rounded" style="width:100%;">
+            <a class="navbar-brand">CRM</a>
+            <form class="form-inline">
+                <div class="badge badge-primary text-wrap" style="width: 6rem; height: 2rem; margin-right: 1rem;">
+                    {{request.user}}
+                </div>
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
+                <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Logout</button>
+            </form>
+        </nav>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 shadow-sm p-3 mb-5 bg-white rounded">
+            <div class="accordion" id="accordionExample">
+                <div class="card ">
+                    <div id="headingOne">
+                        <h2 class="mb-0">
+                            <button class="btn btn-light btn-lg btn-block bg-info text-white" type="button"
+                                    data-toggle="collapse"
+                                    data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                Employees
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                         data-parent="#accordionExample">
+                        <div class="card-body">
+                            <ul class="list-group text-center">
+                                <a class="list-group-item list-group-item-action bg-light" href="{% url 'register' %}">Create emloyee</a>
+                                <a class="list-group-item list-group-item-action bg-light" href="{% url 'admin_panel' 'employees' %}">Employees list</a>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div id="headingTwo">
+                        <h2 class="mb-0">
+                            <button class="btn btn-light btn-lg btn-block bg-info text-white" type="button"
+                                    data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+                                    aria-controls="collapseTwo">
+                                Clients
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                        <div class="card-body">
+                            <ul class="list-group text-center">
+                                <a class="list-group-item list-group-item-action bg-light" href="{% url 'create_client' %}">Add client</a>
+                                <a class="list-group-item list-group-item-action bg-light" href="{% url 'admin_panel' 'clients' %}">Clients list</a>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div id="headingThree">
+                        <h2 class="mb-0">
+                            <button class="btn btn-light btn-lg btn-block bg-info text-white" type="button"
+                                    data-toggle="collapse" data-target="#collapseThree" aria-expanded="true"
+                                    aria-controls="collapseThree">
+                                Valuations
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseThree" class="collapse show" aria-labelledby="headingThree"
+                         data-parent="#accordionExample">
+                        <div class="card-body">
+                            <ul class="list-group text-center">
+                                <a class="list-group-item list-group-item-action bg-light" href="#">Valuations list</a>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div id="headingFour">
+                        <h2 class="mb-0">
+                            <button class="btn btn-light btn-lg btn-block bg-info text-white" type="button"
+                                    data-toggle="collapse" data-target="#collapseFour" aria-expanded="true"
+                                    aria-controls="collapseFour">
+                                Projects
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseFour" class="collapse show" aria-labelledby="headingFour"
+                         data-parent="#accordionExample">
+                        <div class="card-body">
+                            <ul class="list-group text-center">
+                                <a class="list-group-item list-group-item-action bg-light" href="{% url 'admin_panel' 'projects' %}">Projects list</a>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-10 shadow-sm p-3 mb-5 bg-white rounded pull-right" style="max-width: 70%; margin-left: 1%;">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
@@ -25,5 +127,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
         integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
         crossorigin="anonymous"></script>
+
 </body>
+
 </html>

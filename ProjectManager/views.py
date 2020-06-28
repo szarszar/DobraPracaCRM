@@ -27,7 +27,6 @@ def register_employee(request):
 
             Employee.objects.create(
                 user=user,
-                status='Active',
                 phone_number=phone_number,
                 group=group,
 
@@ -76,10 +75,17 @@ def admin_panel(request, pk):
     projects = Project.objects.all()
     employees = Employee.objects.all()
 
-    myFilter = ProjectFilter(request.GET, queryset=projects)
-    projects = myFilter.qs
+    filter_projects = ProjectFilter(request.GET, queryset=projects)
+    projects = filter_projects.qs
 
-    context = {'clients': clients, 'projects': projects, 'employees': employees, 'myFilter': myFilter}
+    filter_clients = ClientFilter(request.GET, queryset=clients)
+    clients = filter_clients.qs
+
+    filter_employees = EmployeeFilter(request.GET, queryset=employees)
+    employees = filter_employees.qs
+
+    context = {'clients': clients, 'projects': projects, 'employees': employees, 'filter_projects': filter_projects,
+               'filter_clients': filter_clients, 'filter_employees': filter_employees}
     if pk == 'clients':
         return render(request, 'admin_panel_clients.html', context)
     elif pk == 'projects':
@@ -156,8 +162,17 @@ def client_preview(request, pk):
     form = CreateClientForm(instance=client)
     projects = Project.objects.filter(client=client)
 
+    if request.method == "POST":
+        forms = CreateClientForm(request.POST, instance=client)
+        if forms.is_valid():
+            client = forms.save()
+
+            messages.success(request,
+                             f"Changes for {client.company_name} {client.first_name} {client.last_name} has been saved")
+            return redirect('admin_panel', 'clients')
+
     context = {'client': client, 'projects': projects, 'form': form}
-    return render(request, 'client_preview.html', context)
+    return render(request, 'client_edit.html', context)
 
 
 def project_preview(request, pk):
@@ -204,7 +219,6 @@ def create_expense(request, pk):
 
 
 def employee_panel(request):
-
     user = request.user
     employee = Employee.objects.get(user=user)
     projects = Project.objects.filter(employees=employee)
@@ -212,3 +226,11 @@ def employee_panel(request):
     context = {'projects': projects}
 
     return render(request, 'employee_panel.html', context)
+
+
+def add_valuation(request, pk):
+    return render(request, 'add_valuation.html')
+
+
+def valuation_preview(request, pk):
+    return render(request, 'valuation_preview.html')

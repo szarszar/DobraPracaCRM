@@ -1,7 +1,27 @@
 {% extends 'index.html' %}
 {% block content %}
-{% include 'admin_panel.html' %}
 
+<div id="accordion">
+    <div class="card">
+        <div id="headingOne">
+            <h5 class="mb-0">
+                <button class="btn btn-light btn-lg btn-block bg-info text-white" data-toggle="collapse" data-target="#collapseFilter" aria-expanded="false"
+                        aria-controls="collapseFilter">
+                    Filters
+                </button>
+            </h5>
+        </div>
+
+        <div id="collapseFilter" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+            <div class="card-body">
+                <form method="get">
+                    {{filter_clients.form.as_p}}
+                    <button type="submit" class="btn btn-large btn-success pull-right text-center">Search</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% for client in clients %}
 <div class="accordion" id="accordionExample">
     <div class="card">
@@ -16,17 +36,25 @@
         <div id="client{{client.id}}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
             <div class="card-body">
                 <div class="container">
-                    {{client.company_name}} {{client.first_name}} {{client.last_name}}
+                    {{client}}
                     <hr>
-                    <p>{{client.email}} {{client.phone_number}}</p>
-                    <p>{{client.city}} {{client.adress}}</p>
+                    <p>Mobile: {{client.phone_number}}</p>
+                    <p>Mail: {{client.email}}</p>
+                    <p>City: {{client.zip_code}} {{client.city}}</p>
+                    <p>Address: {{client.address}}</p>
                     <div class="container">
                         <div class="row">
                             <div class="col-sm">
-                                <a href="{% url 'client' client.id %}" class="btn btn-outline-info">Edit info</a>
+                                <a href="" class="btn btn-outline-info">See ongoing projects</a>
                             </div>
                             <div class="col-sm">
-                                <a href="{% url 'create_project' client.id%}" class="btn btn-outline-info">Add project</a>
+                                <a href="{% url 'client' client.id%}" class="btn btn-outline-info">Edit info</a>
+                            </div>
+                            <div class="col-sm">
+                                <a href="" class="btn btn-outline-info">Start Valuation</a>
+                            </div>
+                            <div class="col-sm">
+                                <a href="" class="btn btn-outline-info"> Valuation</a>
                             </div>
                         </div>
                     </div>
@@ -36,4 +64,4 @@
     </div>
 </div>
 {% endfor %}
-{% endblock %}
+{% endblock %}index.html'%}

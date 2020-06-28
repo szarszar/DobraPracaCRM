@@ -26,9 +26,10 @@ class Client(models.Model):
     phone_number = models.CharField(max_length=48)
     city = models.CharField(max_length=24)
     address = models.CharField(max_length=24)
+    zip_code = models.CharField(max_length=6, null=True)
 
     def __str__(self):
-        name = f"{self.company_name}{self.first_name} {self.last_name}"
+        name = f"{self.company_name} {self.first_name} {self.last_name}"
         return name
 
 
@@ -46,7 +47,7 @@ class Valuation(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     status = models.CharField(max_length=24)
     expert = models.OneToOneField(Employee, on_delete=models.CASCADE)
-    offer_file = models.FileField(upload_to=file_path)
+    offer_file = models.FileField(upload_to=file_path, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     last_update = models.DateTimeField(auto_now=True)
 

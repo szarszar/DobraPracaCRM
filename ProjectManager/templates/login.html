@@ -1,6 +1,6 @@
 {% extends 'index.html' %}
 {% block content%}
-<div class="login">
+<div class="container" style="max-width: 600px;">
     <form method="POST" action="">
         {% csrf_token %}
         <div class="form-group ">
@@ -22,7 +22,6 @@
             <div class="col-xs-6 col-md-6">
                 <div class="left-section">
                     <hr>
-                    <a href="{% url 'register' %}">Zarejestruj się</a>
                 </div>
             </div>
             <div class="col-xs-6 col-md-6 pull-right">
