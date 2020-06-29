@@ -2,7 +2,7 @@ from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from .models import *
-from django.contrib.admin.widgets import AdminDateWidget
+from django.contrib.admin.widgets import AdminDateWidget, AdminTimeWidget
 
 
 class CreateUserForm(UserCreationForm):
@@ -53,8 +53,8 @@ class CreateMeetingForm(ModelForm):
     class Meta:
         model = Meeting
         fields = '__all__'
-        exclude = ('client',)
+        exclude = ('client', 'valuation',)
         widgets = {
-            'date': AdminDateWidget()
+            'date': AdminDateWidget,
+            'time': AdminTimeWidget
         }
-

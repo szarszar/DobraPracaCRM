@@ -68,10 +68,10 @@ class ValuationDetails(models.Model):
 
 
 class Meeting(models.Model):
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, null=True)
     valuation = models.ForeignKey(Valuation, on_delete=models.CASCADE, null=True)
-    date = models.DateField(null=True)
-    time = models.CharField(max_length=5, null=True)
+    date = models.CharField(max_length=20, null=True)
+    time = models.CharField(max_length=6, null=True)
     city = models.CharField(max_length=24, null=True)
     address = models.CharField(max_length=24, null=True)
     zip_code = models.CharField(max_length=6, null=True)

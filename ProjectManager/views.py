@@ -252,6 +252,27 @@ def valuation_preview(request, pk):
         if form.is_valid():
             form.save()
 
-    context = {'form': form, 'valuation': valuation, 'meeting':meeting, 'details': details}
+    context = {'form': form, 'valuation': valuation, 'meeting': meeting, 'details': details}
 
     return render(request, 'valuation_preview.html', context)
+
+
+def add_meeting(request, pk):
+    valuation = Valuation.objects.get(id=pk)
+    form = CreateMeetingForm(instance=valuation.client)
+    client = valuation.client
+
+    context = {'valuation': valuation, 'form': form}
+
+    if request.method == 'POST':
+        form = CreateMeetingForm(request.POST)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.client = client
+            form.valuation = valuation
+            form.save()
+
+        return redirect('valuation', pk)
+
+    return render(request, 'add_meeting.html', context)
+

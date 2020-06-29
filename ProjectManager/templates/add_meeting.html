@@ -1,0 +1,72 @@
+{% extends 'index.html' %}
+{% block content %}
+<form method="POST" action="">
+    {% csrf_token %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <div class="card text-center">
+                    <div class="card-header">
+                        {{form.date.label}}
+                    </div>
+                    <div class="card-body">
+                        {{form.date}}
+                    </div>
+                </div>
+                <div class="card text-center">
+                    <div class="card-header">
+                        {{form.time.label}}
+                    </div>
+                    <div class="card-body">
+                        {{form.time}}
+                    </div>
+                </div>
+                <div class="card text-center">
+                    <div class="card-header">
+                        {{form.employee.label}}
+                    </div>
+                    <div class="card-body">
+                        {{form.employee}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="card text-center">
+                    <div class="card-header">
+                        {{form.zip_code.label}}
+                    </div>
+                    <div class="card-body">
+                        {{form.zip_code}}
+                    </div>
+                </div>
+                <div class="card text-center">
+                    <div class="card-header">
+                        {{form.city.label}}
+                    </div>
+                    <div class="card-body">
+                        {{form.city}}
+                    </div>
+                </div>
+                <div class="card text-center">
+                    <div class="card-header">
+                        {{form.address.label}}
+                    </div>
+                    <div class="card-body">
+                        {{form.address}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-block btn-outline-success">Save</button>
+    </div>
+
+</form>
+<script type="text/javascript" src="/admin/jsi18n/"></script>
+<script type="text/javascript" src="/static/admin/js/core.js"></script>
+<script type="text/javascript" src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
+<script type="text/javascript" src="/static/admin/js/jquery.min.js"></script>
+<script type="text/javascript" src="/static/admin/js/jquery.init.js"></script>
+<script type="text/javascript" src="/static/admin/js/actions.min.js"></script>
+<script type="text/javascript" src="/static/admin/js/calendar.js"></script>
+<script type="text/javascript" src="/static/admin/js/admin/DateTimeShortcuts.js"></script>
+{% endblock %}

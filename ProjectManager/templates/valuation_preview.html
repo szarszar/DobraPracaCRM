@@ -1,4 +1,47 @@
 {% extends 'index.html' %}
 {% block content%}
-{% include 'valuation_form.html' %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            {% include 'valuation_form.html' %}
+        </div>
+        <div class="col-sm">
+            <div class="card text-center">
+                <div class="card-header">
+                    Meeting
+                </div>
+                <div class="card-body">
+                    {% for element in meeting %}
+                    <h5>{{element.date}} {{element.time}}</h5>
+                    <p>{{element.zip_code}} {{element.city}}</p>
+                    <p>{{element.address}}</p>
+                    <p>Assigned Expert: {{element.employee}}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="card text-center">
+                <div class="card-header">
+                    Valuation details
+                </div>
+                <div class="card-body">
+                    <ul>
+                        {% for element in details %}
+                        <li>Surface area: {{element.surface_area}}</li>
+                        <li>Layers required: {{element.number_of_layers}}</li>
+                        <li>Employees needed: {{element.employees_needed}}</li>
+                        <li>Estimated hours of work: {{element.work_hours}}</li>
+                        <li>Is lift needed: {{element.lift_needed}}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% if not meeting %}
+<a href="{% url 'add_meeting' valuation.id %}" class="btn btn-block btn-warning text-dark">Create meeting</a>
+{% endif %}
+{% if not details %}
+<a href="{% url 'add_details' valuation.id %}" class="btn btn-block btn-warning text-dark">Add details</a>
+{% endif %}
 {% endblock %}

@@ -16,7 +16,7 @@ urlpatterns = [
     path('project_preview/<str:pk>', views.project_preview, name='project'),
     path('add_valuation/<str:pk>', views.add_valuation, name='add_valuation'),
     path('valuation/<str:pk>', views.valuation_preview, name='valuation'),
-
+    path('add_meeting/<str:pk>', views.add_meeting, name='add_meeting'),
 
 
 ]
