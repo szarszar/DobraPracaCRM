@@ -11,7 +11,7 @@ class ClientAdmin(admin.ModelAdmin):
 
 
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ['client', 'city', 'address', 'date_created']
+    list_display = ['client', 'date_created']
 
 
 class StageDetailAdmin(admin.ModelAdmin):
@@ -42,3 +42,7 @@ admin.site.register(Expense, ExpenseAdmin)
 admin.site.register(StageDetailImages, StageDetailImagesAdmin)
 admin.site.register(Valuation, ValuationAdmin)
 admin.site.register(Meeting, MeetingAdmin)
+admin.site.register(ValuationDetails)
+admin.site.register(ValuationImages)
+admin.site.register(Expert)
+

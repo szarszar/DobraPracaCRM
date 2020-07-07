@@ -17,6 +17,8 @@ urlpatterns = [
     path('add_valuation/<str:pk>', views.add_valuation, name='add_valuation'),
     path('valuation/<str:pk>', views.valuation_preview, name='valuation'),
     path('add_meeting/<str:pk>', views.add_meeting, name='add_meeting'),
+    path('add_details/<str:pk>', views.add_valuation_details, name='add_details'),
+    path('valuation_prefix/<str:pk>', views.valuation_prefix, name='prefix'),
 
 
 ]

@@ -26,11 +26,10 @@
                 <div class="card-body">
                     <ul>
                         {% for element in details %}
-                        <li>Surface area: {{element.surface_area}}</li>
-                        <li>Layers required: {{element.number_of_layers}}</li>
-                        <li>Employees needed: {{element.employees_needed}}</li>
-                        <li>Estimated hours of work: {{element.work_hours}}</li>
-                        <li>Is lift needed: {{element.lift_needed}}</li>
+                        <li>{{element.label}}{{element}}</li>
+                        {% for image in images %}
+                        <li><a href="{{image.image.url}}">Photo</a></li>
+                        {% endfor %}
                         {% endfor %}
                     </ul>
                 </div>
@@ -43,5 +42,8 @@
 {% endif %}
 {% if not details %}
 <a href="{% url 'add_details' valuation.id %}" class="btn btn-block btn-warning text-dark">Add details</a>
+{% endif %}
+{% if meeting and details %}
+<a href="{% url 'create_project' valuation.id %}" class="btn btn-block btn-warning text-dark">Estimate a project</a>
 {% endif %}
 {% endblock %}

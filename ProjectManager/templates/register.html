@@ -1,22 +1,11 @@
 {% extends 'index.html' %}
 {% block content %}
+{% load crispy_forms_tags %}
 <div class="container">
     <form method="POST" action="">
         {% csrf_token %}
+        {{ forms|crispy}}
         <div class="row">
-            <div class="col-sm">
-                {% for field in forms %}
-
-                <div class="card text-center">
-                    <div class="card-header">
-                        {{field.label}}
-                    </div>
-                    <div class="card-body">
-                        {{field}}
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
             <div class="col-sm">
                 <div class="card text-center">
                     <div class="card-header">
@@ -27,23 +16,21 @@
                                placeholder="Only Digits">
                     </div>
                 </div>
+            </div>
+            <div class="col-sm">
                 <div class="card text-center">
                     <div class="card-header">
-                        <label for="group">Group:</label>
+                        <label for="IsExpert">Expert</label>
                     </div>
                     <div class="card-body">
-                        <select class="form-control" name="group" id="group">
-                            <option>Washer</option>
-                            <option>Painter</option>
-                            <option>Expert</option>
-                        </select>
+                        <input type="checkbox" class="form-control" name="IsExpert" id="IsExpert">
                     </div>
                 </div>
-                <hr>
-                <button type="submit" class="btn btn-block btn-success pull-right text-center">Register</button>
-
             </div>
         </div>
+
+        <hr>
+        <button type="submit" class="btn btn-block btn-success pull-right text-center">Register</button>
     </form>
 </div>
 

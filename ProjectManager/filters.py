@@ -10,17 +10,14 @@ class ProjectFilter(django_filters.FilterSet):
     def __init__(self, data=None, queryset=None, *, request=None, prefix=None):
         super(ProjectFilter, self).__init__(data=data, queryset=queryset, request=request, prefix=prefix)
         self.filters['client'].field.widget.attrs.update({'class': 'form-control'})
-        self.filters['city'].field.widget.attrs.update({'class': 'form-control'})
-        self.filters['address'].field.widget.attrs.update({'class': 'form-control'})
         self.filters['status'].field.widget.attrs.update({'class': 'form-control'})
         self.filters['employees'].field.widget.attrs.update({'class': 'custom-select'})
-        self.filters['client'].field.widget.attrs.update({'class': 'form-control'})
-        self.filters['lift_needed'].field.widget.attrs.update({'class': 'form-control'})
+        self.filters['status_advance'].field.widget.attrs.update({'class': 'form-control'})
 
     class Meta:
         model = Project
         fields = '__all__'
-        exclude = ['description', 'status_advance', 'date_created', 'update_date']
+        exclude = ['description', 'date_created', 'update_date']
 
 
 class ClientFilter(django_filters.FilterSet):
@@ -42,11 +39,44 @@ class ClientFilter(django_filters.FilterSet):
 
 
 class EmployeeFilter(django_filters.FilterSet):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email']
+
+
+class ValuationFilter(django_filters.FilterSet):
+    date = DateFromToRangeFilter(field_name='date_created')
+    date_updated = DateFromToRangeFilter(field_name='last_update')
 
     def __init__(self, data=None, queryset=None, *, request=None, prefix=None):
-        super(EmployeeFilter, self).__init__(data=data, queryset=queryset, request=request, prefix=prefix)
-        self.filters['group'].field.widget.attrs.update({'class': 'form-control'})
+        super(ValuationFilter, self).__init__(data=data, queryset=queryset, request=request, prefix=prefix)
+        self.filters['client'].field.widget.attrs.update({'class': 'form-control'})
+        self.filters['status'].field.widget.attrs.update({'class': 'form-control'})
+        self.filters['message'].field.widget.attrs.update({'class': 'form-control'})
+        self.filters['cost'].field.widget.attrs.update({'class': 'form-control'})
 
     class Meta:
-        model = Employee
-        fields = ['group']
+        model = Valuation
+        fields = ['client', 'status', 'message', 'cost']
+
+
+class ValuationDetailFilter(django_filters.FilterSet):
+
+    def __init__(self, data=None, queryset=None, *, request=None, prefix=None):
+        super(ValuationDetailFilter, self).__init__(data=data, queryset=queryset, request=request, prefix=prefix)
+        self.filters['surface_area_wood'].field.widget.attrs.update({'class': 'form-control'})
+        self.filters['surface_area_concrete'].field.widget.attrs.update({'class': 'form-control'})
+        self.filters['number_of_layers'].field.widget.attrs.update({'class': 'form-control'})
+        self.filters['employees_needed'].field.widget.attrs.update({'class': 'form-control'})
+        self.filters['work_hours'].field.widget.attrs.update({'class': 'form-control'})
+        self.filters['paint'].field.widget.attrs.update({'class': 'form-control'})
+        self.filters['color_code'].field.widget.attrs.update({'class': 'form-control'})
+        self.filters['lift_needed'].field.widget.attrs.update({'class': 'form-control'})
+        self.filters['scaffolding_needed'].field.widget.attrs.update({'class': 'form-control'})
+
+
+    class Meta:
+        model = ValuationDetails
+        fields = ['surface_area_wood', 'surface_area_concrete', 'number_of_layers',
+                  'employees_needed', 'work_hours', 'paint', 'color_code', 'lift_needed', 'scaffolding_needed' ]
+

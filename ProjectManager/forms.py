@@ -56,5 +56,11 @@ class CreateMeetingForm(ModelForm):
         exclude = ('client', 'valuation',)
         widgets = {
             'date': AdminDateWidget,
-            'time': AdminTimeWidget
         }
+
+
+class ValuationDetailsForm(ModelForm):
+    class Meta:
+        model = ValuationDetails
+        fields = '__all__'
+        exclude = ('valuation',)

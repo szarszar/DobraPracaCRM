@@ -3,34 +3,39 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import *
 from .filters import *
+from django.contrib.auth.models import User
+from django.contrib.admin.views.decorators import staff_member_required
 
 
 def home(request):
-    if request.user is not None:
-        if request.user.is_staff:
-            return redirect('admin_panel', 'clients')
-        else:
-            return redirect('panel')
+    users = User.objects.all()
+    if request.user.is_staff:
+        return redirect('admin_panel', 'clients')
+    elif request.user in users:
+        return redirect('panel')
     else:
         return redirect('login')
 
 
+@staff_member_required
 def register_employee(request):
     forms = CreateUserForm()
 
     if request.method == "POST":
         forms = CreateUserForm(request.POST)
         phone_number = request.POST.get('PhoneNumber', '')
-        group = request.POST.get('group', '')
         if forms.is_valid():
             user = forms.save()
 
-            Employee.objects.create(
+            employee = Employee.objects.create(
                 user=user,
                 phone_number=phone_number,
-                group=group,
-
             )
+
+            if request.POST.get('IsExpert', ''):
+                Expert.objects.create(
+                    employee=employee
+                )
 
             messages.success(request, f"Account for {user.first_name} {user.last_name} has been created")
 
@@ -65,15 +70,21 @@ def panel(request):
     employee = Employee.objects.get(user=request.user)
     projects = Project.objects.filter(employee=employee)
 
-    context = {'projects': projects}
+    print(meetings)
+    print(employee)
+
+    context = {'projects': projects, 'meetings': meetings}
 
     return render(request, 'employee_panel.html', context)
 
 
+@staff_member_required
 def admin_panel(request, pk):
     clients = Client.objects.all()
     projects = Project.objects.all()
     employees = Employee.objects.all()
+    valuations = Valuation.objects.all()
+    valuations_details = ValuationDetails.objects.all()
 
     filter_projects = ProjectFilter(request.GET, queryset=projects)
     projects = filter_projects.qs
@@ -84,16 +95,29 @@ def admin_panel(request, pk):
     filter_employees = EmployeeFilter(request.GET, queryset=employees)
     employees = filter_employees.qs
 
-    context = {'clients': clients, 'projects': projects, 'employees': employees, 'filter_projects': filter_projects,
-               'filter_clients': filter_clients, 'filter_employees': filter_employees}
+    filter_valuations = ValuationFilter(request.GET, queryset=valuations)
+    valuations = filter_valuations.qs
+
+    filter_valuations_details = ValuationDetailFilter(request.GET, queryset=valuations_details)
+    valuations_details = filter_valuations_details.qs
+
+    context = {'clients': clients, 'projects': projects, 'employees': employees, 'valuations': valuations,
+               'valuations_details': valuations_details,
+               'filter_projects': filter_projects,
+               'filter_clients': filter_clients, 'filter_employees': filter_employees,
+               'filter_valuations_details': filter_valuations_details,
+               'filter_valuations': filter_valuations}
     if pk == 'clients':
         return render(request, 'admin_panel_clients.html', context)
     elif pk == 'projects':
         return render(request, 'admin_panel_projects.html', context)
     elif pk == 'employees':
         return render(request, 'admin_panel_employees.html', context)
+    elif pk == 'valuations':
+        return render(request, 'admin_panel_valuations.html', context)
 
 
+@staff_member_required
 def create_client(request):
     form = CreateClientForm()
 
@@ -111,20 +135,24 @@ def create_client(request):
     return render(request, 'create_client.html', context)
 
 
+@staff_member_required
 def create_project(request, pk):
-    client = Client.objects.get(id=pk)
-    form = CreateProjectForm(instance=client)
+    valuation = Valuation.objects.get(id=pk)
 
-    if request.method == "POST":
+    form = CreateProjectForm()
+
+    if request.method == 'POST':
         form = CreateProjectForm(request.POST)
-        employees = request.POST.getlist('employees')
-        if form.is_valid():
-            project = form.save(commit=False)
-            project.client = client
-            project.save()
-            project.employees.set(employees)
 
-            return redirect('admin_panel', 'projects')
+        print(form.errors)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.client = valuation.client
+            form.valuation = valuation
+            form.status = 'New'
+            form.save()
+
+            return redirect('project', form.id)
 
     context = {'form': form}
 
@@ -181,6 +209,7 @@ def project_preview(request, pk):
     stage_details = StageDetail.objects.filter(project=project)
     client = project.client
     form = CreateProjectForm(instance=project)
+    employees = project.employees.all()
 
     if request.method == 'POST':
         form = CreateProjectForm(request.POST, instance=project)
@@ -194,7 +223,8 @@ def project_preview(request, pk):
 
             return redirect('project', pk)
 
-    context = {'project': project, 'expenses': expenses, 'stage_details': stage_details, 'form': form}
+    context = {'project': project, 'expenses': expenses, 'stage_details': stage_details, 'form': form,
+               'employees': employees}
 
     return render(request, 'project_preview.html', context)
 
@@ -219,11 +249,11 @@ def create_expense(request, pk):
 
 
 def employee_panel(request):
-    user = request.user
-    employee = Employee.objects.get(user=user)
+    employee = Employee.objects.get(user=request.user)
     projects = Project.objects.filter(employees=employee)
+    meetings = Meeting.objects.filter(employee=employee)
 
-    context = {'projects': projects}
+    context = {'projects': projects, 'meetings': meetings}
 
     return render(request, 'employee_panel.html', context)
 
@@ -246,13 +276,19 @@ def valuation_preview(request, pk):
     meeting = Meeting.objects.filter(valuation=valuation)
     details = ValuationDetails.objects.filter(valuation=valuation)
 
+    context = {'form': form, 'valuation': valuation, 'meeting': meeting, 'details': details}
+
+    if details:
+        images = ValuationImages.objects.filter(valuation=valuation)
+        context['images'] = images
+
     if request.method == 'POST':
-        form = CreateValuationForm(request.POST, instance=valuation)
+        form = CreateValuationForm(request.POST, request.FILES, instance=valuation)
 
         if form.is_valid():
+            form = form.save(commit=False)
+            form.cost = form.work_cost + form.materials_cost + form.equipment_cost
             form.save()
-
-    context = {'form': form, 'valuation': valuation, 'meeting': meeting, 'details': details}
 
     return render(request, 'valuation_preview.html', context)
 
@@ -266,13 +302,46 @@ def add_meeting(request, pk):
 
     if request.method == 'POST':
         form = CreateMeetingForm(request.POST)
+        print(form.errors)
         if form.is_valid():
             form = form.save(commit=False)
             form.client = client
             form.valuation = valuation
+            valuation.status = 'Meeting was arranged'
             form.save()
 
         return redirect('valuation', pk)
 
     return render(request, 'add_meeting.html', context)
 
+
+def add_valuation_details(request, pk):
+    valuation = Valuation.objects.get(id=pk)
+    form = ValuationDetailsForm()
+
+    if request.method == "POST":
+        forms = ValuationDetailsForm(request.POST, request.FILES)
+
+        if forms.is_valid():
+            form = forms.save(commit=False)
+            form.valuation = valuation
+            form.save()
+
+            for thing in request.FILES.getlist('images'):
+                instance = ValuationImages(
+                    valuation=valuation,
+                    image=thing
+                )
+                instance.save()
+
+            return redirect('valuation', pk)
+
+    context = {'form': form}
+    return render(request, 'add_details.html', context)
+
+
+def valuation_prefix(request, pk):
+    client = Client.objects.get(id=pk)
+    valuation = Valuation.objects.get(client=client)
+
+    return redirect('valuation', valuation.id)

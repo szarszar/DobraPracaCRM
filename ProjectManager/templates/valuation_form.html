@@ -8,6 +8,13 @@
             <div class="card-body">
                 <p class="card-title">{{form.status}}</p>
                 <p class="card-text">Message from client: {{form.message}}</p>
+                <ul class="text-left">
+                    <p class="card-title text-center">Final cost: {{valuation.cost}}</p>
+                    <li>Work: {{form.work_cost}}</li>
+                    <li>Materials: {{form.materials_cost}}</li>
+                    <li>Equipment: {{form.equipment_cost}}</li>
+                </ul>
+                <p>{{form.offer_file}}</p>
                 <button type="submit" class="btn btn-block btn-outline-success">Save</button>
             </div>
             <div class="card-footer text-muted">

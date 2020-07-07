@@ -32,8 +32,8 @@
                 <div class="badge badge-primary text-wrap" style="width: 6rem; height: 2rem; margin-right: 1rem;">
                     {{request.user}}
                 </div>
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
-                <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Logout</button>
+                <a href="{% url 'login' %}" class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</a>
+                <a href="{% url 'logout' %}" class="btn btn-outline-danger my-2 my-sm-0" type="submit">Logout</a>
             </form>
         </nav>
     </div>
@@ -98,7 +98,7 @@
                          data-parent="#accordionExample">
                         <div class="card-body">
                             <ul class="list-group text-center">
-                                <a class="list-group-item list-group-item-action bg-light" href="#">Valuations list</a>
+                                <a class="list-group-item list-group-item-action bg-light" href="{% url 'admin_panel' 'valuations' %}">Valuations list</a>
                             </ul>
                         </div>
                     </div>

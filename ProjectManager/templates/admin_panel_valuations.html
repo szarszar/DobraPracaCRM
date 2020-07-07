@@ -1,34 +1,51 @@
 {% extends 'index.html' %}
 {% block content %}
-{% include 'admin_panel.html' %}
 
-{% for employee in employees %}
+<div id="accordion">
+    <div class="card">
+        <div id="headingOne">
+            <h5 class="mb-0">
+                <button class="btn btn-light btn-lg btn-block bg-info text-white" data-toggle="collapse" data-target="#collapseFilter" aria-expanded="false"
+                        aria-controls="collapseFilter">
+                    Filters
+                </button>
+            </h5>
+        </div>
+
+        <div id="collapseFilter" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+            <div class="card-body">
+                <form method="get">
+                    {{filter_valuations.form.as_p}}
+                    {{filter_valuations_details.form.as_p}}
+                    <button type="submit" class="btn btn-large btn-success pull-right text-center">Search</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% for valuation in valuations %}
 <div class="accordion" id="accordionExample">
     <div class="card">
         <div class="card-header" id="headingTwo">
             <h2 class="mb-0">
                 <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse"
-                        data-target="#employee{{employee.id}}" aria-expanded="false" aria-controls="employee{{employee.id}}">
-                    {{employee}}
+                        data-target="#valuation{{valuation.id}}" aria-expanded="false" aria-controls="valuation{{valuation.id}}">
+                   <p>{{valuation.status}} {{valuation.client}}</p>
                 </button>
             </h2>
         </div>
-        <div id="employee{{employee.id}}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+        <div id="valuation{{valuation.id}}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
             <div class="card-body">
                 <div class="container">
-                    {{employee}}
+                    {{valuation.client}}
                     <hr>
-                    <p>Mobile: {{employee.phone_number}}</p>
-                    <p>Mail: {{employee.user.username}}</p>
-                    <p>Status: {{employee.status}}</p>
-                    <p>Group: {{employee.group}}</p>
+                    <p>Description: {{valuation.message}}</p>
                     <div class="container">
                         <div class="row">
                             <div class="col-sm">
-                                <a href="" class="btn btn-outline-info">See projects</a>
-                            </div>
-                            <div class="col-sm">
-                                <a href="" class="btn btn-outline-info">Edit info</a>
+                                <a href="{% url 'valuation' valuation.id %}" class="btn btn-outline-info">See details</a>
                             </div>
                         </div>
                     </div>
