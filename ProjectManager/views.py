@@ -66,18 +66,6 @@ def logout_user(request):
     return redirect('login')
 
 
-def panel(request):
-    employee = Employee.objects.get(user=request.user)
-    projects = Project.objects.filter(employee=employee)
-
-    print(meetings)
-    print(employee)
-
-    context = {'projects': projects, 'meetings': meetings}
-
-    return render(request, 'employee_panel.html', context)
-
-
 @staff_member_required
 def admin_panel(request, pk):
     clients = Client.objects.all()
@@ -138,23 +126,23 @@ def create_client(request):
 @staff_member_required
 def create_project(request, pk):
     valuation = Valuation.objects.get(id=pk)
-
     form = CreateProjectForm()
 
     if request.method == 'POST':
         form = CreateProjectForm(request.POST)
+        employees = request.POST.getlist('employees')
 
-        print(form.errors)
         if form.is_valid():
             form = form.save(commit=False)
             form.client = valuation.client
             form.valuation = valuation
             form.status = 'New'
             form.save()
+            form.employees.set(employees)
 
             return redirect('project', form.id)
 
-    context = {'form': form}
+    context = {'form': form,}
 
     return render(request, 'create_project.html', context)
 
@@ -209,7 +197,9 @@ def project_preview(request, pk):
     stage_details = StageDetail.objects.filter(project=project)
     client = project.client
     form = CreateProjectForm(instance=project)
-    employees = project.employees.all()
+    employees = project.employees
+    meeting = Meeting.objects.get(valuation=project.valuation)
+    valuation_details = ValuationDetails.objects.get(valuation=project.valuation)
 
     if request.method == 'POST':
         form = CreateProjectForm(request.POST, instance=project)
@@ -224,14 +214,14 @@ def project_preview(request, pk):
             return redirect('project', pk)
 
     context = {'project': project, 'expenses': expenses, 'stage_details': stage_details, 'form': form,
-               'employees': employees}
+               'employees': employees, 'meeting': meeting, 'details':valuation_details}
 
     return render(request, 'project_preview.html', context)
 
 
 def create_expense(request, pk):
     project = Project.objects.get(id=pk)
-    form = CreateExpenseForm()
+    form = CreateExpenseForm(instance=request.user)
 
     if request.method == "POST":
         forms = CreateExpenseForm(request.POST, request.FILES)
@@ -274,9 +264,13 @@ def valuation_preview(request, pk):
     valuation = Valuation.objects.get(id=pk)
     form = CreateValuationForm(instance=valuation)
     meeting = Meeting.objects.filter(valuation=valuation)
-    details = ValuationDetails.objects.filter(valuation=valuation)
-
-    context = {'form': form, 'valuation': valuation, 'meeting': meeting, 'details': details}
+    try:
+        details = ValuationDetails.objects.get(valuation=valuation)
+    except ValuationDetails.DoesNotExist:
+        details = None
+        context = {'form': form, 'valuation': valuation, 'meeting': meeting}
+    else:
+        context = {'form': form, 'valuation': valuation, 'meeting': meeting, 'details': details}
 
     if details:
         images = ValuationImages.objects.filter(valuation=valuation)
@@ -289,6 +283,8 @@ def valuation_preview(request, pk):
             form = form.save(commit=False)
             form.cost = form.work_cost + form.materials_cost + form.equipment_cost
             form.save()
+
+            return redirect('valuation', valuation.id)
 
     return render(request, 'valuation_preview.html', context)
 
@@ -345,3 +341,12 @@ def valuation_prefix(request, pk):
     valuation = Valuation.objects.get(client=client)
 
     return redirect('valuation', valuation.id)
+
+
+def valuation_gallery(request, pk):
+    valuation = Valuation.objects.get(id=pk)
+    images = ValuationImages.objects.filter(valuation=valuation)
+
+    context = {'images': images}
+
+    return render(request, 'gallery.html', context)

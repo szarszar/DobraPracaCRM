@@ -1,16 +1,86 @@
 {% extends 'index.html' %}
 {% block content %}
 {% load crispy_forms_tags %}
-
-<form method="POST" action="" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{form|crispy}}
+<div class="container">
+    <form method="POST" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-sm">
+                <div class="card text-center">
+                    <div class="card-header bg-secondary text-white">
+                        <p>Surface area WOOD: {{form.surface_area_wood}}</p>
+                    </div>
+                    <div class="card-text">
+                        <br>
+                        <p>Paint: {{form.paint_wood}}</p>
+                        <p>Color code: {{form.color_code_wood}}</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="card text-center">
+                    <div class="card-header bg-secondary text-white">
+                        <p>Surface area CONCRETE: {{form.surface_area_concrete}}</p>
+                    </div>
+                    <div class="card-text">
+                        <br>
+                        <p>Paint: {{form.paint_concrete}}</p>
+                        <p>Color code: {{form.color_code_concrete}}</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="card text-center">
+                    <div class="card-header bg-secondary text-white">
+                        <p>Windows: {{form.number_of_windows}}</p>
+                        <p> Doors: {{form.number_of_doors}}</p>
+                    </div>
+                    <div class="card-text">
+                        <br>
+                        <p>Paint: {{form.paint_windows}}</p>
+                        <p>Color code: {{form.color_code_windows}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="card text-center">
+                    <div class="card-header bg-secondary text-white">
+                        <p>Employees</p>
+                    </div>
+                    <div class="card-text">
+                        <br>
+                        <p>Needed employees: {{form.employees_needed}}</p>
+                        <p>Estimated work hours: {{form.work_hours}}</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="card text-center">
+                    <div class="card-header bg-secondary text-white">
+                        <p>Equipment need</p>
+                    </div>
+                    <div class="card-text">
+                        <br>
+                        <p>Lift: {{form.lift_needed}}</p>
+                        <p>Scaffolding: {{form.scaffolding_needed}}</p>
+                        <p>Number of layers: {{form.number_of_layers}}</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="card text-center">
+                    <div class="card-header bg-secondary text-white">
+                        <p>Other</p>
+                    </div>
+                    <div class="card-text">
+                        <br>
+                        <p>{{form.other_stuff}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="card text-center">
             <div class="card-header">
-                <input type="file" name="images" multiple>
+               <p>Photos: <input type="file" name="images" multiple></p>
             </div>
         </div>
         <button type="submit" class="btn btn-block btn-outline-success">Save</button>
-</form>
-
+    </form>
+</div>
 {% endblock %}

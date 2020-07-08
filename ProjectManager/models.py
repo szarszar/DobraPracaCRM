@@ -75,17 +75,22 @@ class ValuationDetails(models.Model):
     ]
 
     valuation = models.ForeignKey(Valuation, on_delete=models.CASCADE)
-    surface_area_wood = models.DecimalField(max_digits=6, decimal_places=2)
-    surface_area_concrete = models.DecimalField(max_digits=6, decimal_places=2)
-    number_of_windows = models.IntegerField()
-    number_of_doors = models.IntegerField()
+    surface_area_wood = models.DecimalField(max_digits=6, decimal_places=2, null=True)
+    paint_wood = models.CharField(max_length=24, null=True)
+    color_code_wood = models.CharField(max_length=24, null=True)
+    surface_area_concrete = models.DecimalField(max_digits=6, decimal_places=2, null=True)
+    paint_concrete = models.CharField(max_length=24, null=True)
+    color_code_concrete = models.CharField(max_length=24, null=True)
+    number_of_windows = models.IntegerField(null=True)
+    number_of_doors = models.IntegerField(null=True)
     number_of_layers = models.IntegerField(choices=layers_choices)
     employees_needed = models.IntegerField(choices=employees_choices)
     work_hours = models.SmallIntegerField()
-    paint = models.CharField(max_length=24)
-    color_code = models.CharField(max_length=24)
+    paint_windows = models.CharField(max_length=24, null=True)
+    color_code_windows = models.CharField(max_length=24, null=True)
     lift_needed = models.BooleanField(default=False)
     scaffolding_needed = models.BooleanField(default=False)
+    other_stuff = models.TextField(null=True)
 
 
 class Meeting(models.Model):
@@ -132,7 +137,8 @@ class Project(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=14, choices=status_choices, default="New", blank=True)
     status_advance = models.CharField(max_length=14, choices=advance_choices, blank=True)
-    employees = models.ManyToManyField(Employee)
+    employees_washing = models.ManyToManyField(Employee, related_name='washer+')
+    employees_painting = models.ManyToManyField(Employee, related_name='painter+')
     update_date = models.DateField(auto_now=True, blank=True)
 
     def __str__(self):
@@ -168,7 +174,7 @@ class Expense(models.Model):
     tools_cost = models.DecimalField(max_digits=6, decimal_places=2)
     equipment_cost = models.DecimalField(max_digits=6, decimal_places=2)
     other_cost = models.DecimalField(max_digits=6, decimal_places=2)
-    who_paid = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True)
+    who_paid = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         name = f"Expense nr {self.id} for {self.project}"

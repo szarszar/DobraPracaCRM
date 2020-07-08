@@ -69,14 +69,18 @@ class ValuationDetailFilter(django_filters.FilterSet):
         self.filters['number_of_layers'].field.widget.attrs.update({'class': 'form-control'})
         self.filters['employees_needed'].field.widget.attrs.update({'class': 'form-control'})
         self.filters['work_hours'].field.widget.attrs.update({'class': 'form-control'})
-        self.filters['paint'].field.widget.attrs.update({'class': 'form-control'})
-        self.filters['color_code'].field.widget.attrs.update({'class': 'form-control'})
+        self.filters['paint_wood'].field.widget.attrs.update({'class': 'form-control'})
+        self.filters['color_code_wood'].field.widget.attrs.update({'class': 'form-control'})
         self.filters['lift_needed'].field.widget.attrs.update({'class': 'form-control'})
         self.filters['scaffolding_needed'].field.widget.attrs.update({'class': 'form-control'})
+        self.filters['paint_concrete'].field.widget.attrs.update({'class': 'form-control'})
+        self.filters['color_code_concrete'].field.widget.attrs.update({'class': 'form-control'})
+        self.filters['paint_windows'].field.widget.attrs.update({'class': 'form-control'})
+        self.filters['color_code_windows'].field.widget.attrs.update({'class': 'form-control'})
 
 
     class Meta:
         model = ValuationDetails
-        fields = ['surface_area_wood', 'surface_area_concrete', 'number_of_layers',
-                  'employees_needed', 'work_hours', 'paint', 'color_code', 'lift_needed', 'scaffolding_needed' ]
+        fields = '__all__'
+        exclude = ['valuation']
 

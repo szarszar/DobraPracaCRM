@@ -19,6 +19,6 @@ urlpatterns = [
     path('add_meeting/<str:pk>', views.add_meeting, name='add_meeting'),
     path('add_details/<str:pk>', views.add_valuation_details, name='add_details'),
     path('valuation_prefix/<str:pk>', views.valuation_prefix, name='prefix'),
-
+    path('gallery/<str:pk>', views.valuation_gallery, name='gallery'),
 
 ]

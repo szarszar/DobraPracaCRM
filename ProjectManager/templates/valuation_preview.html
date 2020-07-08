@@ -23,15 +23,22 @@
                 <div class="card-header">
                     Valuation details
                 </div>
-                <div class="card-body">
+                <div class="card-body text-left">
                     <ul>
-                        {% for element in details %}
-                        <li>{{element.label}}{{element}}</li>
-                        {% for image in images %}
-                        <li><a href="{{image.image.url}}">Photo</a></li>
-                        {% endfor %}
-                        {% endfor %}
+                        <li>Wood surface: {{details.surface_area_wood}}</li>
+                        <li>Concrete surface: {{details.surface_area_concrete}}</li>
+                        <li>Amount of windows: {{details.number_of_windows}}</li>
+                        <li>Amount of doors: {{details.number_of_doors}}</li>
+                        <li>Layers required: {{details.number_of_layers}}</li>
+                        <li>Employees required: {{details.employees_needed}}</li>
+                        <li>Estimated work hours: {{details.work_hours}}</li>
+                        <li>Paint: {{details.paint}}</li>
+                        <li>Color code: {{details.color_code}}</li>
+                        <li>Is lift needed: {{details.lift_needed}}</li>
+                        <li>Is scaffolding needed: {{details.scaffolding_needed}}</li>
                     </ul>
+                    <p>Photos</p>
+                    <a href="{% url 'gallery' valuation.id %}" class="btn btn-block btn-info text-dark">Gallery</a>
                 </div>
             </div>
         </div>

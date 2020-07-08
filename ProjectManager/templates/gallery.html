@@ -1,0 +1,11 @@
+{% extends 'index.html' %}
+{% block content %}
+
+{% for image in images %}
+
+<img src="{{image.image.url}}" class="d-block w-100" alt="...">
+<hr>
+
+{% endfor %}
+
+{%endblock%}
