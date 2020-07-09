@@ -156,12 +156,12 @@ class StageDetail(models.Model):
         ('Finished', 'Finished'),
     ]
 
-    project = models.OneToOneField(Project, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
     description = models.TextField(null=True)
     status = models.CharField(max_length=14, choices=status_choices)
 
     def __str__(self):
-        name = f"Detail for {self.project.status} stage"
+        name = f"Detail for {self.status} stage"
         return name
 
 
@@ -169,7 +169,6 @@ class Expense(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     image = models.ImageField()
     description = models.TextField(null=True)
-    cost = models.DecimalField(max_digits=8, decimal_places=2)
     paint_cost = models.DecimalField(max_digits=6, decimal_places=2)
     tools_cost = models.DecimalField(max_digits=6, decimal_places=2)
     equipment_cost = models.DecimalField(max_digits=6, decimal_places=2)

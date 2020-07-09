@@ -1,0 +1,68 @@
+{% extends 'index.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <p class="btn btn-block btn-info text-center text-white">Ekspertyza</p>
+            <div class="row">
+                <div class="col-sm">
+                    <div class="card">
+                        <p class="card-header"><b>Powierzchnia drewniana {{details.surface_area_wood}} m2</b></p>
+                        <p class="card-text">Farba: {{details.paint_wood}}<br>Kod koloru: {{details.color_code_wood}}
+                        </p>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="card">
+                        <p class="card-header"><b>Powierzchnia murowana {{details.surface_area_concrete}} m2</b></p>
+                        <p class="card-text">Farba: {{details.paint_concrete}}<br>Kod koloru:
+                            {{details.color_code_concrete}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm">
+                    <div class="card">
+                        <p class="card-header"><b>Okna: {{details.number_of_windows}} szt</b><br>
+                            Drzwi: {{details.number_of_doors}} szt</p>
+                        <p class="card-text">Farba: {{details.paint_windows}}<br>Kod koloru:
+                            {{details.color_code_windows}}</p>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="card">
+                        <p class="card-header"><b>Ilość warstw do położenia: {{details.number_of_layers}}</b></p>
+                        <p class="card-text">Szacunkowa suma godzin: {{details.work_hours}}<br>Potrzebny dźwig:
+                            {{details.lift_needed}}<br>Potrzebne rusztowanie: {{details.scaffolding_needed}}</p>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-sm">
+                    <div class="card">
+                        <p class="card-header">Dodatkowe informacje</p>
+                        <p class="card-text">{{details.other_stuff}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="card">
+        <p class="card-header">Adres</p>
+        <p class="card-text">
+            {{meeting.zip_code}}, {{meeting.city}}<br>
+            {{meeting.address}}
+        </p>
+    </div>
+    <hr>
+    <div class="card">
+        <p class="card-header">
+            <a href="" class="btn btn-block btn-info text-white text-center">Zdjęcia</a>
+        </p>
+    </div>
+</div>
+
+{% endblock %}

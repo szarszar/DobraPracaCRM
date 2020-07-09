@@ -11,7 +11,7 @@ class ProjectFilter(django_filters.FilterSet):
         super(ProjectFilter, self).__init__(data=data, queryset=queryset, request=request, prefix=prefix)
         self.filters['client'].field.widget.attrs.update({'class': 'form-control'})
         self.filters['status'].field.widget.attrs.update({'class': 'form-control'})
-        self.filters['employees'].field.widget.attrs.update({'class': 'custom-select'})
+        self.filters['employees_washing'].field.widget.attrs.update({'class': 'custom-select'})
         self.filters['status_advance'].field.widget.attrs.update({'class': 'form-control'})
 
     class Meta:

@@ -5,6 +5,7 @@ from .forms import *
 from .filters import *
 from django.contrib.auth.models import User
 from django.contrib.admin.views.decorators import staff_member_required
+from itertools import chain
 
 
 def home(request):
@@ -130,7 +131,8 @@ def create_project(request, pk):
 
     if request.method == 'POST':
         form = CreateProjectForm(request.POST)
-        employees = request.POST.getlist('employees')
+        washers = request.POST.getlist('employees_washing')
+        painters = request.POST.getlist('employees_painting')
 
         if form.is_valid():
             form = form.save(commit=False)
@@ -138,11 +140,12 @@ def create_project(request, pk):
             form.valuation = valuation
             form.status = 'New'
             form.save()
-            form.employees.set(employees)
+            form.employees_washing.set(washers)
+            form.employees_painting.set(painters)
 
             return redirect('project', form.id)
 
-    context = {'form': form,}
+    context = {'form': form, }
 
     return render(request, 'create_project.html', context)
 
@@ -166,7 +169,10 @@ def create_stage_detail(request, pk):
             )
             instance.save()
 
-        return redirect('project', pk)
+        if request.user.is_staff:
+            return redirect('project', pk)
+        else:
+            return redirect('panel')
 
     context = {'form': form}
 
@@ -193,28 +199,45 @@ def client_preview(request, pk):
 
 def project_preview(request, pk):
     project = Project.objects.get(id=pk)
+    valuation = project.valuation
     expenses = Expense.objects.filter(project=project)
     stage_details = StageDetail.objects.filter(project=project)
     client = project.client
     form = CreateProjectForm(instance=project)
-    employees = project.employees
-    meeting = Meeting.objects.get(valuation=project.valuation)
-    valuation_details = ValuationDetails.objects.get(valuation=project.valuation)
+    washers = project.employees_washing
+    painters = project.employees_painting
+    meeting = Meeting.objects.get(valuation=valuation)
+    valuation_details = ValuationDetails.objects.get(valuation=valuation)
+    paint_cost = 0
+    tools_cost = 0
+    equipment_cost = 0
+    other_cost = 0
+
+    for expense in expenses:
+        paint_cost += expense.paint_cost
+        tools_cost += expense.tools_cost
+        equipment_cost += expense.equipment_cost
+        other_cost += expense.other_cost
+
+    total_cost = paint_cost + tools_cost + equipment_cost + other_cost
 
     if request.method == 'POST':
         form = CreateProjectForm(request.POST, instance=project)
-        employees = request.POST.getlist('employees')
-
+        washers = request.POST.getlist('employees_washing')
+        painters = request.POST.getlist('employees_painting')
         if form.is_valid():
             project = form.save(commit=False)
             project.client = client
             project.save()
-            project.employees.set(employees)
+            project.employees_washing.set(washers)
+            project.employees_painting.set(painters)
 
             return redirect('project', pk)
 
     context = {'project': project, 'expenses': expenses, 'stage_details': stage_details, 'form': form,
-               'employees': employees, 'meeting': meeting, 'details':valuation_details}
+               'washers': washers, 'painters': painters, 'meeting': meeting, 'details': valuation_details,
+               'total_cost': total_cost, 'paint_cost': paint_cost, 'tools_cost': tools_cost,
+               'equipment_cost': equipment_cost, 'other_cost': other_cost, 'valuation': valuation}
 
     return render(request, 'project_preview.html', context)
 
@@ -231,7 +254,10 @@ def create_expense(request, pk):
             form.project = project
             form.save()
 
-        return redirect('project', pk)
+        if request.user.is_staff:
+            return redirect('project', pk)
+        else:
+            return redirect('panel')
 
     context = {'form': form}
 
@@ -240,10 +266,24 @@ def create_expense(request, pk):
 
 def employee_panel(request):
     employee = Employee.objects.get(user=request.user)
-    projects = Project.objects.filter(employees=employee)
-    meetings = Meeting.objects.filter(employee=employee)
+    washing_projects = Project.objects.filter(employees_washing=employee)
+    painting_projects = Project.objects.filter(employees_painting=employee)
 
-    context = {'projects': projects, 'meetings': meetings}
+    res_list = list(chain(washing_projects, painting_projects))
+    result_list = []
+
+    [result_list.append(x) for x in res_list if x not in result_list]
+
+    try:
+        expert = Expert.objects.get(employee=employee)
+    except Expert.DoesNotExist:
+        expert = None
+    else:
+        expert = Expert.objects.get(employee=employee)
+
+    meetings = Meeting.objects.filter(employee=expert)
+
+    context = {'painter': painting_projects, 'projects': result_list}
 
     return render(request, 'employee_panel.html', context)
 
@@ -350,3 +390,24 @@ def valuation_gallery(request, pk):
     context = {'images': images}
 
     return render(request, 'gallery.html', context)
+
+
+def details_gallery(request, pk):
+    stage_detail = StageDetail.objects.get(id=pk)
+    images = StageDetailImages.objects.filter(stage_detail=stage_detail)
+
+    context = {'images': images}
+
+    return render(request, 'gallery.html', context)
+
+
+def employee_project_view(request, pk):
+    project = Project.objects.get(id=pk)
+    valuation = project.valuation
+    details = ValuationDetails.objects.get(valuation=valuation)
+    images = ValuationImages.objects.filter(valuation=valuation)
+    meeting = Meeting.objects.get(valuation=valuation)
+
+    context = {'project': project, 'valuation': valuation, 'details': details, 'images': images, 'meeting': meeting}
+
+    return render(request, 'employee_view.html', context)

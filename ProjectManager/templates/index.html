@@ -37,6 +37,7 @@
             </form>
         </nav>
     </div>
+    {% if request.user.is_staff %}
     <div class="row">
         <div class="col-sm-3 shadow-sm p-3 mb-5 bg-white rounded">
             <div class="accordion" id="accordionExample">
@@ -125,6 +126,7 @@
                 </div>
             </div>
         </div>
+        {% endif %}
         <div class="col-lg-10 shadow-sm p-3 mb-5 bg-white rounded pull-right" style="max-width: 70%; margin-left: 1%;">
             {% block content %}
             {% endblock %}

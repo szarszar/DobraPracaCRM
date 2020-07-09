@@ -24,8 +24,9 @@ class CreateProjectForm(ModelForm):
     class Meta:
         model = Project
         fields = '__all__'
-        exclude = ('client',)
-        widgets = {'employees': forms.widgets.CheckboxSelectMultiple()}
+        exclude = ('client', 'valuation')
+        widgets = {'employees_washing': forms.widgets.CheckboxSelectMultiple(),
+                   'employees_painting': forms.widgets.CheckboxSelectMultiple()}
 
 
 class CreateStageDetailForm(ModelForm):

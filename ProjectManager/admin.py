@@ -19,7 +19,7 @@ class StageDetailAdmin(admin.ModelAdmin):
 
 
 class ExpenseAdmin(admin.ModelAdmin):
-    list_display = ['project', 'cost']
+    list_display = ['project']
 
 
 class StageDetailImagesAdmin(admin.ModelAdmin):

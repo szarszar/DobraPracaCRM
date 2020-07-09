@@ -1,5 +1,5 @@
-db.sqlite3
 settings.py
+db.sqlite3
 migrations/
 __init__.py
 __pycache__/

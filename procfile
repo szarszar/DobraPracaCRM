@@ -1,0 +1,1 @@
+web: gunicorn DobraPracaCRM.wsgi --log-file -

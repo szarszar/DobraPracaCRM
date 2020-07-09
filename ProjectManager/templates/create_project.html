@@ -1,19 +1,38 @@
 {% extends 'index.html' %}
 {% block content %}
-<div class="container" style="margin: auto; max-width: 480px; margin-top: 5%;">
+<div class="container">
     <form method="POST" action="">
         {% csrf_token %}
-        {{form.employees}}
-        <div class="card text-center">
-            <div class="card-header">
-                <button type="submit" class="btn btn-large btn-success pull-right text-center">Register</button>
+        <div class="row">
+            <div class="col-sm">
+                <div class="card">
+                    <div class="card-header">
+                        Assign employees for washing
+                    </div>
+                    <br>
+                    {{form.employees_washing}}
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="card">
+                    <div class="card-header">
+                        Assign employees for painting
+                    </div>
+                    <br>
+                    {{form.employees_painting}}
+                </div>
             </div>
         </div>
+        <br>
+        <div class="container">
+            <div class="card text-center">
+                <div class="card-header">
+                    <button type="submit" class="btn btn-block btn-success pull-right text-center">Register</button>
+                </div>
+            </div>
+        </div>
+        {{forms.errors}}
 
-</div>
-
-{{forms.errors}}
-
-</form>
+    </form>
 </div>
 {% endblock %}

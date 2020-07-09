@@ -20,5 +20,7 @@ urlpatterns = [
     path('add_details/<str:pk>', views.add_valuation_details, name='add_details'),
     path('valuation_prefix/<str:pk>', views.valuation_prefix, name='prefix'),
     path('gallery/<str:pk>', views.valuation_gallery, name='gallery'),
+    path('details_gallery/<str:pk>', views.details_gallery, name='details_gallery'),
+    path('employee_view/<str:pk>', views.employee_project_view, name='employee_view'),
 
 ]

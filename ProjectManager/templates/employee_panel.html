@@ -1,61 +1,96 @@
 {% extends 'index.html' %}
 {% block content%}
-
 <div class="container">
-    <div class="row">
-        <div class="col-sm">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page">Active Projects</li>
-                </ol>
-            </nav>
-            {% for project in projects %}
-            <div class="card" style="margin: aouto; margin-top: 5%;">
-                <div class="card-header">
-                    <h3>{{project}}</h3>
-                </div>
+    {% if meetings %}
+    <p class="btn btn-block btn-info text-center">Twoje spotkania</p>
+    <div class="accordion" id="accordionExample">
+        {% for meeting in meetings %}
+        <div class="card">
+            <div class="card-header" id="heading{{meeting.id}}">
+                <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse"
+                            data-target="#collapse{{meeting.id}}" aria-expanded="false"
+                            aria-controls="collapse{{meeting.id}}">
+                        <p>Spotkanie {{meeting.client}} dnia {{meeting.date}}</p>
+                    </button>
+                </h2>
+            </div>
+            <div id="collapse{{meeting.id}}" class="collapse" aria-labelledby="heading{{meeting.id}}"
+                 data-parent="#accordionExample">
                 <div class="card-body">
-                    <h5 class="card-title">Adress: {{project.city}} {{project.address}}</h5>
-                    <p class="card-text">Status: {{project.status}}</p>
-                    <ul>
-                        {% for employee in project.employees.all %}
-                        <li>{{employee}}</li>
-                        {% endfor %}
-                    </ul>
-                    <a href="{% url 'create_expense' project.id %}" class="btn btn-primary text-white">Add Expense</a>
-                    <a href="{% url 'create_stage_detail' project.id %}" class="btn btn-primary text-white">Add Stage
-                        Detail</a>
+                    <div class="row">
+                        <div class="col-sm">
+                            <ul>
+                                <li>Klient: {{meeting.client}}</li>
+                                <li>Data: {{meeting.date}}</li>
+                                <li>Godzina: {{meeting.time}}</li>
+                            </ul>
+                        </div>
+                        <div class="col-sm">
+                            <ul>
+                                <li>Miasto: {{meeting.zip_code}}, {{meeting.city}}</li>
+                                <li>Adres: {{meeting.address}}</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
-            {% endfor %}
         </div>
-        {% if meetings %}
-        <div class="col-sm">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page">Pending meetings</li>
-                </ol>
-            </nav>
-            {% for meeting in meetings %}
-            <div class="card" style="margin: aouto; margin-top: 5%;">
-                <div class="card-header">
-                    <h3>{{meeting.client}}</h3>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Adress: {{meeting.zip_code}} {{meeting.city}} {{meeting.address}}</h5>
-                    <p class="card-text">Date: {{meeting.date}} {{meeting.time}}</p>
-                    <ul>
-                        <a href="{% url 'add_details' meeting.valuation.id %}" class="btn btn-primary text-white">Add
-                            valuation details</a>
-                    </ul>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-
-
+        {% endfor %}
     </div>
+    {% endif %}
+    <hr>
+    <div class="accordion" id="accordionExample2">
+        <p class="btn btn-block btn-info text-center">Twoje projekty</p>
+        {% for project in projects %}
+        <div class="card">
+            <div class="card-header" id="heading{{project.id}}">
+                <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse"
+                            data-target="#collapse{{project.id}}" aria-expanded="false"
+                            aria-controls="collapse{{project.id}}">
+                        <p>Projekt dla {{project.client}} o statusie {{project.status}}</p>
+                    </button>
+                </h2>
+            </div>
+            <div id="collapse{{project.id}}" class="collapse" aria-labelledby="heading{{project.id}}"
+                 data-parent="#accordionExample2">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm">
+                            <ul>
+                                <p>Osoby przypisane do mycia</p>
+                                {% for employee in project.employees_washing.all %}
+                                <li>{{employee}}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="col-sm">
+                            <ul>
+                                <p>Osoby przypisane do malowania</p>
+                                {% for employee in project.employees_painting.all %}
+                                <li>{{employee}}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">
+                            <a href="{% url 'employee_view' project.id %}" class="btn btn-block btn-info text-white">Szczegóły projektu</a>
+                        </div>
+                        <div class="col-sm">
+                            <a href="{% url 'create_expense' project.id %}" class="btn btn-block btn-info text-white">Dodaj koszt</a>
+                        </div>
+                        <div class="col-sm">
+                            <a href="{% url 'create_stage_detail' project.id %}" class="btn btn-block btn-info text-white">Dodaj szczegóły etapu</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
 </div>
+
 
 {% endblock %}
