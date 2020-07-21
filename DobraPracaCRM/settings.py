@@ -8,12 +8,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '7h_x2g*f5c9ewwhr3(i-7wilbg%xckaow&u@f69f9pw&si1w82'
+SECRET_KEY = os.environ.get("SECRET_KEY", None)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['46.101.250.188', 'localhost', 'pm.dobra.no']
 
 
 # Application definition
@@ -69,13 +69,17 @@ WSGI_APPLICATION = 'DobraPracaCRM.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': "django.db.backends.postgresql_psycopg2",
+        'NAME': "ProjectManager",
+        'USER': "Szarpi" ,
+        'PASSWORD': os.environ.get("DJANGO_DB_PASSWORD", None),
+        "HOST": "private-dobra-praca-db-do-user-7774627-0.a.db.ondigitalocean.com",
+        "PORT": 25060,
     }
 }
 
 
-# Password validation
+# Password validatio
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -111,12 +115,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
+    os.path.join(BASE_DIR, 'static/all')
 ]
 
 MEDIA_URL = '/images/'
