@@ -69,40 +69,44 @@ def logout_user(request):
 
 @staff_member_required
 def admin_panel(request, pk):
-    clients = Client.objects.all()
-    projects = Project.objects.all()
-    employees = Employee.objects.all()
-    valuations = Valuation.objects.all()
-    valuations_details = ValuationDetails.objects.all()
 
-    filter_projects = ProjectFilter(request.GET, queryset=projects)
-    projects = filter_projects.qs
-
-    filter_clients = ClientFilter(request.GET, queryset=clients)
-    clients = filter_clients.qs
-
-    filter_employees = EmployeeFilter(request.GET, queryset=employees)
-    employees = filter_employees.qs
-
-    filter_valuations = ValuationFilter(request.GET, queryset=valuations)
-    valuations = filter_valuations.qs
-
-    filter_valuations_details = ValuationDetailFilter(request.GET, queryset=valuations_details)
-    valuations_details = filter_valuations_details.qs
-
-    context = {'clients': clients, 'projects': projects, 'employees': employees, 'valuations': valuations,
-               'valuations_details': valuations_details,
-               'filter_projects': filter_projects,
-               'filter_clients': filter_clients, 'filter_employees': filter_employees,
-               'filter_valuations_details': filter_valuations_details,
-               'filter_valuations': filter_valuations}
     if pk == 'clients':
+
+        clients = Client.objects.all()
+        filter_clients = ClientFilter(request.GET, queryset=clients)
+        clients = filter_clients.qs
+
+        context = {'clients': clients, 'filter_clients': filter_clients }
         return render(request, 'admin_panel_clients.html', context)
+
     elif pk == 'projects':
+
+        projects = Project.objects.all()
+        filter_projects = ProjectFilter(request.GET, queryset=projects)
+        projects = filter_projects.qs
+
+        context = {'projects': projects, 'filter_projects': filter_projects}
         return render(request, 'admin_panel_projects.html', context)
+
     elif pk == 'employees':
+        employees = Employee.objects.all()
+        filter_employees = EmployeeFilter(request.GET, queryset=employees)
+        employees = filter_employees.qs
+
+        context ={'employees': employees, 'filter_employees': filter_employees}
         return render(request, 'admin_panel_employees.html', context)
     elif pk == 'valuations':
+        valuations = Valuation.objects.all()
+        valuations_details = ValuationDetails.objects.all()
+
+        filter_valuations = ValuationFilter(request.GET, queryset=valuations)
+        valuations = filter_valuations.qs
+
+        filter_valuations_details = ValuationDetailFilter(request.GET, queryset=valuations_details)
+        valuations_details = filter_valuations_details.qs
+
+        context = {'valuations': valuations, 'valuations_details': valuations_details,
+                   'filter_valuations_details': filter_valuations_details, 'filter_valuations': filter_valuations}
         return render(request, 'admin_panel_valuations.html', context)
 
 
