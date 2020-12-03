@@ -70,11 +70,12 @@ WSGI_APPLICATION = 'DobraPracaCRM.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': "django.db.backends.postgresql_psycopg2",
-        'NAME': "ProjectManager",
+        'NAME': "crm_dobra",
         'USER': "Szarpi" ,
-        'PASSWORD': os.environ.get("DJANGO_DB_PASSWORD", None),
-        "HOST": "private-dobra-praca-db-do-user-7774627-0.a.db.ondigitalocean.com",
-        "PORT": 25060,
+        'PASSWORD': '3.12PmDobraNo',
+        #'PASSWORD': os.environ.get("DJANGO_DB_PASSWORD", None),
+        "HOST": "localhost",
+        "PORT": ''
     }
 }
 
